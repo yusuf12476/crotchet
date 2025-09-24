@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheryl's Crochet</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Dancing Script & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for social and profile icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-stone-50 text-gray-800;
+        }
+        .font-heading {
+            font-family: 'Dancing Script', cursive;
+        }
+        .page-section {
+            display: none;
+            min-height: calc(100vh - 80px); /* Account for header */
+        }
+        .page-section.active {
+            display: block;
+        }
+        .nav-link.active {
+            @apply text-amber-600 border-b-2 border-amber-600 font-semibold;
+        }
+        .dropdown-menu {
+            display: none;
+        }
+        .dropdown-menu.active {
+            display: block;
+        }
+        /* Search Bar Overlay Styles */
+        .search-bar {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: translateY(-20px);
+        }
+        .search-bar.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        /* Checkout Modal Styles */
+        #checkout-modal {
+            display: none; /* Hidden by default */
+        }
+        #checkout-modal.active {
+            display: flex; /* Show when active */
+        }
+        /* Quick View Modal Styles */
+        #quick-view-modal {
+            display: none; /* Hidden by default */
+        }
+        #quick-view-modal.active {
+            display: flex; /* Show when active */
+        }
+         /* FAQ Accordion */
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        .details-plus-minus > summary::before {
+            content: '+';
+            font-weight: bold;
+            display: inline-block;
+            transition: transform 0.3s;
+            margin-right: 0.5rem;
+        }
+        .details-plus-minus[open] > summary::before {
+            content: '-';
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-lg py-4 fixed w-full top-0 z-50">
+        <nav class="container mx-auto px-4 md:px-6 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="text-3xl font-semibold text-amber-800 flex items-center font-heading" onclick="showPage('home-page'); return false;">
+                <img src="images/Gemini_Generated_Image_vomy3bvomy3bvomy.png" alt="Cheryl's Crochet Logo" class="h-10 mr-2 rounded-full">
+                Cheryl's Crochet
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#" class="nav-link text-gray-700 hover:text-amber-600 transition-colors" data-page="home-page">Home</a>
+                
+                <!-- Learn Dropdown -->
+                <div class="relative group">
+                    <button class="nav-link text-gray-700 hover:text-amber-600 transition-colors flex items-center" onclick="toggleDropdown('learn-dropdown')">
+                        Learn
+                        <svg class="ml-1 h-4 w-4 transform transition-transform duration-200 group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div id="learn-dropdown" class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 dropdown-menu">
+                        <a href="#" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-page="tutorials-page">Tutorials</a>
+                        <a href="#" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-page="blog-page">Blog</a>
+                        <a href="#" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-page="projects-page">Projects</a>
+                        <a href="#" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-page="about-page">About</a>
+                        <a href="#" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-page="faqs-page">FAQs</a>
+                        <a href="#" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-page="testimonials-page">Testimonials</a>
+                        <a href="#" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-page="contact-page">Contact</a>
+                    </div>
+                </div>
+
+                <a href="#" class="nav-link text-gray-700 hover:text-amber-600 transition-colors" data-page="store-page">Store</a>
+                <button id="search-button-desktop" onclick="toggleSearchBar()" class="text-gray-700 hover:text-amber-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </button>
+                <a href="#" class="nav-link relative flex items-center text-gray-700 hover:text-amber-600 transition-colors" data-page="wishlist-page">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 017.5 3C9.35 3 11 4.13 12 5.6C13 4.13 14.65 3 16.5 3A5.4 5.4 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    <span id="wishlist-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                <a href="#" class="nav-link relative flex items-center bg-amber-500 text-white px-4 py-2 rounded-full hover:bg-amber-600 transition-colors" data-page="cart-page">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M3 1a1 1 0 000 2h.171l.635 3.176A6 6 0 0013.882 17H16a1 1 0 100-2h-2.118A4 4 0 0110.118 13H5.882a4 4 0 01-3.882-3H3a1 1 0 000-2h.118A4 4 0 015.882 7h2.237L8 4H4a1 1 0 000 2h.236l-1 5zM12 9a1 1 0 100-2 1 1 0 000 2zM8 9a1 1 0 100-2 1 1 0 000 2z" />
+                    </svg>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu (Hidden by default) -->
+    <div id="mobile-menu" class="fixed top-16 left-0 w-full bg-white shadow-lg transition-transform duration-300 transform -translate-y-full md:hidden z-40">
+        <nav class="flex flex-col space-y-4 px-8 py-6">
+            <a href="#" class="nav-link text-gray-700 hover:text-amber-600 text-lg" data-page="home-page">Home</a>
+            <div class="relative">
+                 <button class="text-gray-700 hover:text-amber-600 text-lg flex items-center w-full justify-between" onclick="toggleDropdown('mobile-learn-dropdown')">
+                    Learn
+                    <svg class="ml-1 h-4 w-4 transform transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div id="mobile-learn-dropdown" class="mt-2 space-y-2 pl-4 dropdown-menu">
+                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="tutorials-page">Tutorials</a>
+                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="blog-page">Blog</a>
+                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="projects-page">Projects</a>
+                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="about-page">About</a>
+                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="faqs-page">FAQs</a>
+                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="testimonials-page">Testimonials</a>
+                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="contact-page">Contact</a>
+                </div>
+            </div>
+            <a href="#" class="nav-link text-gray-700 hover:text-amber-600 text-lg" data-page="store-page">Store</a>
+            <button id="search-button-mobile" onclick="toggleSearchBar()" class="flex items-center text-gray-700 hover:text-amber-600 text-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <span>Search</span>
+            </button>
+            <a href="#" class="nav-link relative flex items-center justify-center text-gray-700 hover:text-amber-600 transition-colors text-lg" data-page="wishlist-page">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 017.5 3C9.35 3 11 4.13 12 5.6C13 4.13 14.65 3 16.5 3A5.4 5.4 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                <span id="mobile-wishlist-count" class="absolute -top-2 right-14 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                <span>Wishlist</span>
+            </a>
+            <a href="#" class="nav-link relative flex items-center justify-center bg-amber-500 text-white px-4 py-2 rounded-full hover:bg-amber-600 transition-colors text-lg" data-page="cart-page">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M3 1a1 1 0 000 2h.171l.635 3.176A6 6 0 0013.882 17H16a1 1 0 100-2h-2.118A4 4 0 0110.118 13H5.882a4 4 0 01-3.882-3H3a1 1 0 000-2h.118A4 4 0 015.882 7h2.237L8 4H4a1 1 0 000 2h.236l-1 5zM12 9a1 1 0 100-2 1 1 0 000 2zM8 9a1 1 0 100-2 1 1 0 000 2z" />
+                    </svg>
+                <span id="mobile-cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                <span>Cart</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow pt-20">
+        <!-- Message Box -->
+        <div id="message-box" class="fixed top-20 right-4 md:right-8 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 z-[100]">
+            Item added to cart!
+        </div>
+
+        <!-- Search Bar Overlay -->
+        <div id="search-bar" class="search-bar fixed top-0 left-0 w-full h-full bg-white z-[100] flex items-center justify-center">
+            <div class="container mx-auto px-4">
+                <div class="flex items-center justify-center relative max-w-2xl mx-auto">
+                    <input type="text" id="search-input" placeholder="Search for patterns, yarn, or tutorials..." class="w-full text-xl px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all">
+                    <button id="close-search-button" onclick="toggleSearchBar()" class="absolute right-4 text-gray-500 hover:text-gray-800 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="search-results" class="mt-8 text-center text-gray-500">
+                    <!-- Search results will appear here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Home Page -->
+        <section id="home-page" class="page-section active">
+            <!-- Hero Section -->
+            <div class="relative bg-cover bg-center min-h-screen flex items-center justify-center" style="background-image: url('images/IMG_6261.webp');">
+                <div class="absolute inset-0 bg-gray-900 opacity-60"></div>
+                <div class="container mx-auto text-center py-12 px-4 relative z-10 text-white">
+                    <h1 class="text-6xl md:text-7xl font-extrabold leading-tight mb-4 font-heading">Crafting Joy, One Stitch at a Time.</h1>
+                    <p class="text-2xl md:text-3xl mb-8">Discover a world of inspiration, patterns, and quality yarn to bring your crochet dreams to life.</p>
+                    <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                        <a href="#" data-page="store-page" class="nav-link bg-amber-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-amber-700 transition-colors">Shop Yarn & Tools</a>
+                        <a href="#" data-page="tutorials-page" class="nav-link bg-transparent text-white px-8 py-3 rounded-full font-semibold border border-white hover:bg-white hover:text-amber-600 transition-colors">Start Learning</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Other home page content can go here -->
+            <div class="container mx-auto p-4 md:p-8">
+                <div class="py-12">
+                     <h2 class="text-4xl font-bold text-center text-amber-800 mb-8 font-heading">Featured Projects</h2>
+                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                         <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                             <img src="images/amigurumi bunny.webp" alt="Amigurumi Bunny" class="w-full h-48 object-cover">
+                             <div class="p-6">
+                                 <h3 class="text-2xl font-semibold text-gray-800 font-heading">Cozy Bear Pattern</h3>
+                                 <p class="text-gray-600 mt-2">A delightful pattern to create a huggable amigurumi bunny for your loved ones.</p>
+                             </div>
+                         </div>
+                         <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                             <img src="https://placehold.co/600x400/D4F2F2/black?text=Waffle+Stitch+Blanket" alt="Waffle Stitch Blanket" class="w-full h-48 object-cover">
+                             <div class="p-6">
+                                 <h3 class="text-2xl font-semibold text-gray-800 font-heading">Waffle Stitch Blanket</h3>
+                                 <p class="text-gray-600 mt-2">Learn the beautiful texture of the waffle stitch to create this cozy throw.</p>
+                             </div>
+                         </div>
+                         <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                             <img src="https://placehold.co/600x400/E8F2D4/black?text=Crochet+Cardigan" alt="Crochet Cardigan" class="w-full h-48 object-cover">
+                             <div class="p-6">
+                                 <h3 class="text-2xl font-semibold text-gray-800 font-heading">Modern Cardigan Pattern</h3>
+                                 <p class="text-gray-600 mt-2">A stylish and wearable piece that's easier to make than you think!</p>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Page -->
+        <section id="about-page" class="page-section p-4 md:p-8">
+            <div class="container mx-auto py-12">
+                <h2 class="text-5xl font-bold text-center text-amber-800 mb-6 font-heading">Our Story</h2>
+                <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
+                    <p class="text-xl text-gray-800 mb-4">
+                        Cheryl's Crochet was born from a simple passion: the joy of creating beautiful, handmade items with a hook and some yarn. What started as a personal hobby quickly grew into a desire to share this wonderful craft with others. We believe that crocheting is more than just a pastime; it's a form of therapy, a way to express creativity, and a means to connect with a global community of makers.
+                    </p>
+                    <p class="text-xl text-gray-800 mb-4">
+                        Our mission is to provide high-quality materials, easy-to-follow tutorials, and endless inspiration for crocheters of all skill levels. Whether you're a complete beginner picking up a hook for the first time or a seasoned artisan looking for your next challenge, we're here to support you on your creative journey.
+                    </p>
+                    <p class="text-xl text-gray-800">
+                        Thank you for being a part of our story. Let's create something beautiful together!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Tutorials Page -->
+        <section id="tutorials-page" class="page-section p-4 md:p-8">
+            <div class="container mx-auto py-12">
+                <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Video Tutorials</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Tutorial 1 -->
+                    <div class="bg-white rounded-lg shadow-md p-4">
+                        <div class="aspect-w-16 aspect-h-9 mb-4 overflow-hidden rounded-lg">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/a-W22v-Q7eU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <h3 class="text-3xl font-semibold text-gray-800 mb-2 font-heading">Beginner's Guide to Single Crochet</h3>
+                        <p class="text-gray-800">Learn the fundamental stitch that forms the basis of countless projects. Perfect for first-time crocheters!</p>
+                    </div>
+                    <!-- Tutorial 2 -->
+                    <div class="bg-white rounded-lg shadow-md p-4">
+                        <div class="aspect-w-16 aspect-h-9 mb-4 overflow-hidden rounded-lg">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/U3l0_Q7dC2c" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <h3 class="text-3xl font-semibold text-gray-800 mb-2 font-heading">How to Read a Crochet Pattern</h3>
+                        <p class="text-gray-800">Demystify the language of patterns with our step-by-step guide. You'll be reading patterns like a pro in no time!</p>
+                    </div>
+                    <!-- Tutorial 3 -->
+                    <div class="bg-white rounded-lg shadow-md p-4">
+                        <div class="aspect-w-16 aspect-h-9 mb-4 overflow-hidden rounded-lg">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/5F2o3rD57iE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <h3 class="text-3xl font-semibold text-gray-800 mb-2 font-heading">Crocheting a Magic Ring</h3>
+                        <p class="text-gray-800">The perfect start for any amigurumi or round project. Master this technique for seamless joins.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Page -->
+        <section id="blog-page" class="page-section p-4 md:p-8">
+            <div class="container mx-auto py-12">
+                <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Our Blog</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Blog Post 1 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="https://placehold.co/600x400/966F33/white?text=Blog+Post+1" alt="Blog post image" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-3xl font-semibold text-gray-800 mb-2 font-heading">5 Must-Have Hooks for Every Crocheter</h3>
+                            <p class="text-gray-800 mb-4">Choosing the right hook can make all the difference. We break down the top five hooks you should add to your collection.</p>
+                            <a href="#" class="text-amber-600 font-semibold hover:underline">Read More &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Blog Post 2 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="https://placehold.co/600x400/C0C5B0/white?text=Blog+Post+2" alt="Blog post image" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-3xl font-semibold text-gray-800 mb-2 font-heading">The Best Yarn for Amigurumi</h3>
+                            <p class="text-gray-800 mb-4">Making stuffed toys? We've got the scoop on the perfect yarn types, weights, and fibers for creating adorable amigurumi.</p>
+                            <a href="#" class="text-amber-600 font-semibold hover:underline">Read More &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Blog Post 3 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="https://placehold.co/600x400/9A7C5F/white?text=Blog+Post+3" alt="Blog post image" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-3xl font-semibold text-gray-800 mb-2 font-heading">Getting Started with Crochet Blankets</h3>
+                            <p class="text-gray-800 mb-4">Your first big project doesn't have to be intimidating! Our guide will walk you through everything you need to know.</p>
+                            <a href="#" class="text-amber-600 font-semibold hover:underline">Read More &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Crochet Projects Page -->
+        <section id="projects-page" class="page-section p-4 md:p-8">
+            <div class="container mx-auto py-12">
+                <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Inspiration Gallery</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                    <!-- Project 1 -->
+                    <div class="relative group rounded-lg overflow-hidden shadow-lg">
+                        <img src="https://placehold.co/600x600/F2E8D4/black?text=Project+1" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="p-4 text-white">
+                                <h3 class="text-xl font-semibold font-heading">Granny Square Bag</h3>
+                                <p class="text-base">A classic and colorful tote bag.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 2 -->
+                    <div class="relative group rounded-lg overflow-hidden shadow-lg">
+                        <img src="https://placehold.co/600x600/D4F2F2/black?text=Project+2" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="p-4 text-white">
+                                <h3 class="text-xl font-semibold font-heading">Amigurumi Bunny</h3>
+                                <p class="text-base">An adorable and huggable toy.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 3 -->
+                    <div class="relative group rounded-lg overflow-hidden shadow-lg">
+                        <img src="https://placehold.co/600x600/E8F2D4/black?text=Project+3" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="p-4 text-white">
+                                <h3 class="text-xl font-semibold font-heading">Chunky Throw Blanket</h3>
+                                <p class="text-base">Perfect for cozying up on the couch.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 4 -->
+                    <div class="relative group rounded-lg overflow-hidden shadow-lg">
+                        <img src="https://placehold.co/600x600/F2D4E8/black?text=Project+4" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="p-4 text-white">
+                                <h3 class="text-xl font-semibold font-heading">Crochet Plant Hanger</h3>
+                                <p class="text-base">A stylish way to display your greenery.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 5 -->
+                    <div class="relative group rounded-lg overflow-hidden shadow-lg">
+                        <img src="https://placehold.co/600x600/D4D4F2/black?text=Project+5" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="p-4 text-white">
+                                <h3 class="text-xl font-semibold font-heading">Chevron Scarf</h3>
+                                <p class="text-base">Classic design with a modern twist.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 6 -->
+                    <div class="relative group rounded-lg overflow-hidden shadow-lg">
+                        <img src="https://placehold.co/600x600/F2F2D4/black?text=Project+6" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:opacity-100">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="p-4 text-white">
+                                <h3 class="text-xl font-semibold font-heading">Crochet Coasters</h3>
+                                <p class="text-base">Quick and easy project for beginners.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Store Page -->
+        <section id="store-page" class="page-section p-4 md:p-8">
+            <div class="container mx-auto py-12">
+                <!-- New Arrivals Section -->
+                <div class="mb-16">
+                    <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">New Arrivals</h2>
+                    <div id="new-arrivals-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        <!-- New arrivals will be generated here by JavaScript -->
+                    </div>
+                </div>
+                <!-- All Products Section with Filter -->
+                <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                    <h2 class="text-5xl font-bold text-amber-800 font-heading mb-4 md:mb-0">All Products</h2>
+                    <div class="flex items-center">
+                        <label for="sort-filter" class="mr-2 text-gray-700 font-medium">Sort by:</label>
+                        <select id="sort-filter" class="px-4 py-2 border rounded-lg focus:ring focus:ring-amber-200 focus:outline-none">
+                            <option value="default">Default</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-desc">Price: High to Low</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- All products will be generated here by JavaScript -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Wishlist Page -->
+        <section id="wishlist-page" class="page-section p-4 md:p-8">
+            <div class="container mx-auto py-12">
+                <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Your Wishlist</h2>
+                <div id="wishlist-items-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Wishlist items will be generated here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Shopping Cart Page -->
+        <section id="cart-page" class="page-section p-4 md:p-8">
+            <div class="container mx-auto py-12">
+                <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Your Shopping Cart</h2>
+                <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+                    <div id="cart-items-container">
+                        <!-- Cart items will be generated here by JavaScript -->
+                    </div>
+                    <div id="cart-summary" class="mt-8 border-t border-gray-200 pt-6 flex flex-col items-end">
+                        <div class="text-lg font-semibold text-gray-800">
+                            Subtotal: <span id="cart-subtotal">Ksh 0.00</span>
+                        </div>
+                        <div class="text-xl font-bold text-amber-600 mt-2">
+                            Total: <span id="cart-total">Ksh 0.00</span>
+                        </div>
+                        <div class="flex flex-col md:flex-row items-end md:items-center space-y-2 md:space-y-0 md:space-x-4 mt-6">
+                             <button onclick="clearCart()" class="bg-red-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-600 transition-colors w-full md:w-auto">
+                                Clear Cart
+                            </button>
+                            <button onclick="checkout()" class="bg-amber-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-amber-700 transition-colors w-full md:w-auto">
+                                Proceed to Checkout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FAQs Page -->
+        <section id="faqs-page" class="page-section p-4 md:p-8">
+            <div class="container mx-auto py-12">
+                <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Frequently Asked Questions</h2>
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <details class="bg-white p-6 rounded-lg shadow-md details-plus-minus">
+                        <summary class="text-xl font-semibold text-gray-800 flex justify-between items-center">
+                            How do I choose the right yarn for my project?
+                        </summary>
+                        <p class="mt-4 text-gray-700">The best yarn depends on your project! For wearable items, consider soft fibers like merino wool or cotton. For things that need to hold their shape, such as amigurumi, acrylic or worsted-weight cotton is a great choice.</p>
+                    </details>
+                    <details class="bg-white p-6 rounded-lg shadow-lg details-plus-minus">
+                        <summary class="text-xl font-semibold text-gray-800 flex justify-between items-center">
+                            Do you offer patterns for beginners?
+                        </summary>
+                        <p class="mt-4 text-gray-700">Yes! Our tutorials section has a variety of patterns perfect for beginners, focusing on foundational stitches like single crochet and double crochet. We also have a beginner's crochet kit in our store.</p>
+                    </details>
+                    <details class="bg-white p-6 rounded-lg shadow-lg details-plus-minus">
+                        <summary class="text-xl font-semibold text-gray-800 flex justify-between items-center">
+                            What is the best way to care for my finished crochet items?
+                        </summary>
+                        <p class="mt-4 text-gray-700">We recommend checking the yarn label for specific care instructions. Generally, hand washing and air-drying is the best way to preserve the shape and quality of your handmade items. Avoid machine washing and high heat unless the yarn is specifically marked as machine-washable.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Page -->
+        <section id="testimonials-page" class="page-section p-4 md:p-8">
+            <div class="container mx-auto py-12">
+                <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">What Our Customers Say</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center">
+                        <img src="https://placehold.co/80x80/D4F2F2/black?text=JD" alt="Customer avatar" class="rounded-full w-20 h-20 object-cover mb-4">
+                        <p class="italic text-lg text-gray-700 mb-4">"Cheryl's tutorials are so clear and easy to follow. I went from never touching a hook to finishing my first blanket in just a month!"</p>
+                        <h4 class="font-bold text-amber-800">- Jane D.</h4>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center">
+                        <img src="https://placehold.co/80x80/F2E8D4/black?text=MK" alt="Customer avatar" class="rounded-full w-20 h-20 object-cover mb-4">
+                        <p class="italic text-lg text-gray-700 mb-4">"The yarn quality is exceptional. It's so soft and a joy to work with. My projects have never looked better."</p>
+                        <h4 class="font-bold text-amber-800">- Mark K.</h4>
+                    </div>
+                    <!-- Testimonial 3 -->
+                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center">
+                        <img src="https://placehold.co/80x80/E8F2D4/black?text=LC" alt="Customer avatar" class="rounded-full w-20 h-20 object-cover mb-4">
+                        <p class="italic text-lg text-gray-700 mb-4">"I love the inspiration gallery! It always gives me new ideas and reminds me why I love this craft. The patterns are so creative."</p>
+                        <h4 class="font-bold text-amber-800">- Linda C.</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Page -->
+        <section id="contact-page" class="page-section p-4 md:p-8">
+            <div class="container mx-auto py-12">
+                <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Contact Us</h2>
+                <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <p class="text-center text-xl text-gray-700 mb-6">
+                        We'd love to hear from you! Whether you have a question about a pattern, need help with an order, or just want to share your latest creation, feel free to reach out.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4">Get in Touch</h3>
+                            <form id="contact-form" class="space-y-4">
+                                <div>
+                                    <label for="contact-name" class="block text-gray-700 font-medium mb-1">Name</label>
+                                    <input type="text" id="contact-name" class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-amber-200 focus:outline-none" placeholder="Your Name" required>
+                                </div>
+                                <div>
+                                    <label for="contact-email" class="block text-gray-700 font-medium mb-1">Email</label>
+                                    <input type="email" id="contact-email" class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-amber-200 focus:outline-none" placeholder="you@example.com" required>
+                                </div>
+                                <div>
+                                    <label for="contact-message" class="block text-gray-700 font-medium mb-1">Message</label>
+                                    <textarea id="contact-message" rows="5" class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-amber-200 focus:outline-none" placeholder="Your message..." required></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-amber-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-700 transition-colors">
+                                    Send Message
+                                </button>
+                            </form>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4">Our Details</h3>
+                            <div class="space-y-4 text-gray-700">
+                                <div class="flex items-center">
+                                    <i class="fas fa-map-marker-alt text-amber-600 mr-4"></i>
+                                    <span>123 Yarn Street, Craftville, USA 12345</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-phone-alt text-amber-600 mr-4"></i>
+                                    <span>(123) 456-7890</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-envelope text-amber-600 mr-4"></i>
+                                    <span>info@cheryls-crochet.com</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-clock text-amber-600 mr-4"></i>
+                                    <span>Mon-Fri: 9am - 5pm</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Checkout Modal -->
+        <div id="checkout-modal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-[100] items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-2xl w-full relative">
+                <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+                <h3 class="text-3xl font-bold text-amber-800 mb-4 font-heading">Finalize Your Order</h3>
+                <p class="text-gray-700 mb-6">Please review your order below and choose a method to send it to us. We will contact you to confirm payment and shipping details.</p>
+                <div id="checkout-summary" class="border-t border-b border-gray-200 py-4 mb-6 max-h-64 overflow-y-auto">
+                    <!-- Checkout summary will be injected here -->
+                </div>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <a id="whatsapp-link" href="#" target="_blank" class="flex-1 text-center bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-2"><i class="fab fa-whatsapp"></i> Send via WhatsApp</a>
+                    <a id="email-link" href="#" class="flex-1 text-center bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"><i class="fas fa-envelope"></i> Send via Email</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick View Modal -->
+        <div id="quick-view-modal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-[100] items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-4xl w-full relative mx-auto mt-20">
+                <button onclick="closeQuickView()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+                <div id="quick-view-content" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Quick view content will be injected here -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-12">
+        <div class="container mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Footer Section 1: Logo & Description -->
+            <div class="mb-6 md:mb-0">
+                <a href="#" class="text-3xl font-semibold text-amber-500 flex items-center mb-4 font-heading" onclick="showPage('home-page'); return false;">
+                    <img src="https://placehold.co/40x40/D2B48C/FFFFFF?text=Hook" alt="Cheryl's Crochet Logo" class="h-10 mr-2 rounded-full">
+                    Cheryl's Crochet
+                </a>
+                <p class="text-sm">Bringing the joy of crochet to your hands with quality materials and endless inspiration.</p>
+            </div>
+
+            <!-- Footer Section 2: Navigation -->
+            <div>
+                <h4 class="text-xl font-semibold text-white mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="nav-link hover:text-white transition-colors" data-page="home-page">Home</a></li>
+                    <li><a href="#" class="nav-link hover:text-white transition-colors" data-page="store-page">Shop</a></li>
+                    <li><a href="#" class="nav-link hover:text-white transition-colors" data-page="tutorials-page">Tutorials</a></li>
+                    <li><a href="#" class="nav-link hover:text-white transition-colors" data-page="blog-page">Blog</a></li>
+                    <li><a href="#" class="nav-link hover:text-white transition-colors" data-page="about-page">About Us</a></li>
+                    <li><a href="#" class="nav-link hover:text-white transition-colors" data-page="faqs-page">FAQs</a></li>
+                    <li><a href="#" class="nav-link hover:text-white transition-colors" data-page="testimonials-page">Testimonials</a></li>
+                    <li><a href="#" class="nav-link hover:text-white transition-colors" data-page="contact-page">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Footer Section 3: Connect with Us -->
+            <div>
+                <h4 class="text-xl font-semibold text-white mb-4">Connect</h4>
+                <div class="flex space-x-4 mb-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-facebook-f fa-2x"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-instagram fa-2x"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-pinterest-p fa-2x"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-youtube fa-2x"></i></a>
+                </div>
+                <h4 class="text-xl font-semibold text-white mb-2">Newsletter</h4>
+                <p class="text-sm mb-2">Stay updated with our latest patterns!</p>
+                <form action="#" method="post" class="flex">
+                    <input type="email" placeholder="Your email" class="w-full p-2 rounded-l-lg text-gray-800 focus:outline-none">
+                    <button type="submit" class="bg-amber-600 text-white p-2 rounded-r-lg hover:bg-amber-700 transition-colors">Sign Up</button>
+                </form>
+            </div>
+
+            <!-- Footer Section 4: Contact -->
+            <div>
+                <h4 class="text-xl font-semibold text-white mb-4">Contact</h4>
+                <p class="text-sm">123 Yarn Street, Craftville, USA 12345</p>
+                <p class="text-sm">Email: <a href="mailto:info@cheryls-crochet.com" class="hover:text-white">info@cheryls-crochet.com</a></p>
+                <p class="text-sm">Phone: (123) 456-7890</p>
+            </div>
+        </div>
+
+        <!-- Bottom Copyright Section -->
+        <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500">
+            <p>&copy; 2024 Cheryl's Crochet. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top-button" class="fixed bottom-8 right-8 bg-amber-600 text-white p-3 rounded-full shadow-lg hover:bg-amber-700 transition-opacity duration-300 opacity-0 invisible z-50">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+    <script>
+        // --- Core Application Logic ---
+        const pageSections = document.querySelectorAll('.page-section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const messageBox = document.getElementById('message-box');
+        
+        // A simple, static cart and wishlist for demonstration
+        const cartItems = [];
+        const wishlistItems = [];
+        const products = [
+            { id: 1, name: "Merino Wool Yarn", price: 1875.00, imageUrl: "https://placehold.co/400x400/D4A972/white?text=Wool+Yarn", isNew: true, description: "Luxuriously soft and warm, this 100% merino wool yarn is perfect for sweaters, scarves, and baby blankets. Available in a variety of rich colors." },
+            { id: 2, name: "Bamboo Crochet Hook Set", price: 3750.00, imageUrl: "https://placehold.co/400x400/C0C5B0/white?text=Hook+Set", isNew: false, description: "A complete set of lightweight and ergonomic bamboo crochet hooks. Sizes range from 2mm to 10mm, all stored in a beautiful fabric case." },
+            { id: 3, name: "Cotton Yarn Skein", price: 1300.00, imageUrl: "https://placehold.co/400x400/966F33/white?text=Cotton+Yarn", isNew: false, description: "Durable and breathable 100% cotton yarn. Ideal for dishcloths, market bags, and summer garments. Machine washable for easy care." },
+            { id: 4, name: "Stitch Markers (Pack of 20)", price: 750.00, imageUrl: "https://placehold.co/400x400/E5CC9E/white?text=Markers", isNew: true, description: "Never lose your place again! This pack of 20 locking stitch markers comes in assorted colors to help you keep track of your stitches and rows." },
+            { id: 5, name: "Beginner's Crochet Kit", price: 6750.00, imageUrl: "https://placehold.co/400x400/8B5E3C/white?text=Beginner+Kit", isNew: false, description: "Everything you need to start your crochet journey. This kit includes a set of hooks, several balls of yarn, stitch markers, a yarn needle, and a beginner's pattern book." },
+            { id: 6, name: "Acrylic Yarn Ball", price: 950.00, imageUrl: "https://placehold.co/400x400/A0522D/white?text=Acrylic+Yarn", isNew: false, description: "A versatile and affordable acrylic yarn that's great for a wide range of projects, from blankets to amigurumi. Hypoallergenic and easy to care for." },
+            { id: 7, name: "Yarn Needle Set", price: 525.00, imageUrl: "https://placehold.co/400x400/77502B/white?text=Needles", isNew: true, description: "A set of three blunt-tipped yarn needles in various sizes. Essential for weaving in ends and seaming your finished crochet projects." },
+            { id: 8, name: "Crochet Pattern Book", price: 2700.00, imageUrl: "https://placehold.co/400x400/F2E8D4/black?text=Pattern+Book", isNew: false, description: "A collection of 15 modern and stylish crochet patterns, from accessories to home decor. Includes detailed instructions and beautiful photography." }
+        ];
+
+        /**
+         * Shows the specified page section and hides all others.
+         * Updates navigation link active state.
+         * @param {string} pageId - The ID of the page section to show.
+         */
+        function showPage(pageId) {
+            // Hide all pages
+            pageSections.forEach(page => page.classList.remove('active'));
+            // Show the requested page
+            const activePage = document.getElementById(pageId);
+            if (activePage) {
+                activePage.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Update nav link active state
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Close all dropdowns
+            const dropdowns = document.querySelectorAll('.dropdown-menu');
+            dropdowns.forEach(dropdown => dropdown.classList.remove('active'));
+
+            // Close mobile menu if open
+            mobileMenu.classList.add('-translate-y-full');
+            
+            // Re-render lists if navigating to their pages
+            if (pageId === 'wishlist-page') {
+                renderWishlist();
+            } else if (pageId === 'cart-page') {
+                renderCart();
+            }
+        }
+
+        /**
+         * Toggles the visibility of a dropdown menu.
+         * @param {string} dropdownId - The ID of the dropdown menu.
+         */
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            dropdown.classList.toggle('active');
+        }
+        
+        /**
+         * Displays a temporary message box.
+         * @param {string} message - The message to display.
+         * @param {string} type - 'success' or 'error'
+         */
+        function showMessage(message, type = 'success') {
+            messageBox.textContent = message;
+            messageBox.classList.remove('bg-green-500', 'bg-red-500');
+            messageBox.classList.add(type === 'success' ? 'bg-green-500' : 'bg-red-500');
+            messageBox.classList.add('opacity-100');
+            setTimeout(() => {
+                messageBox.classList.remove('opacity-100');
+            }, 3000);
+        }
+
+        // Event listeners for navigation
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.getAttribute('data-page');
+                if (pageId) {
+                    showPage(pageId);
+                }
+            });
+        });
+
+        // Event listener for mobile menu toggle
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('-translate-y-full');
+        });
+
+        // --- Search Bar Logic ---
+        const searchBar = document.getElementById('search-bar');
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+        const searchButtons = document.querySelectorAll('#search-button-desktop, #search-button-mobile');
+
+        /**
+         * Toggles the visibility of the search bar overlay.
+         */
+        function toggleSearchBar() {
+            searchBar.classList.toggle('active');
+            if (searchBar.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+                searchInput.focus();
+            } else {
+                document.body.style.overflow = '';
+                searchInput.value = '';
+                searchResults.innerHTML = '';
+            }
+        }
+
+        // Event listeners for search buttons
+        searchButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleSearchBar();
+            });
+        });
+
+        // Event listener for Enter key in search input
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                performSearch(searchInput.value);
+            }
+        });
+
+        /**
+         * Performs a placeholder search and displays results.
+         * @param {string} query - The search query.
+         */
+        function performSearch(query) {
+            if (query.trim() === '') {
+                searchResults.innerHTML = '<p>Please enter a search query.</p>';
+                return;
+            }
+            // A simple placeholder search. In a real app, this would query a database.
+            const results = [
+                { title: "Beginner's Guide to Single Crochet", page: "tutorials-page" },
+                { title: "How to Read a Crochet Pattern", page: "tutorials-page" },
+                { title: "5 Must-Have Hooks for Every Crocheter", page: "blog-page" },
+                { title: "Merino Wool Yarn", page: "store-page" },
+                { title: "Frequently Asked Questions", page: "faqs-page" },
+                { title: "Customer Testimonials", page: "testimonials-page" }
+            ].filter(item => item.title.toLowerCase().includes(query.toLowerCase()));
+
+            if (results.length > 0) {
+                searchResults.innerHTML = `
+                    <h3 class="text-3xl font-bold text-amber-800 mb-4">Search Results for "${query}"</h3>
+                    <div class="flex flex-col space-y-4 max-w-lg mx-auto">
+                        ${results.map(result => `
+                            <a href="#" class="block bg-gray-100 p-4 rounded-lg shadow-sm hover:bg-amber-100 transition-colors" onclick="showPage('${result.page}'); toggleSearchBar(); return false;">
+                                <h4 class="text-xl font-semibold text-gray-800">${result.title}</h4>
+                            </a>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                searchResults.innerHTML = `<p class="text-xl">No results found for "${query}".</p>`;
+            }
+        }
+
+        // --- Store, Wishlist, & Shopping Cart Logic ---
+        /**
+         * Renders the new arrivals on the store page.
+         */
+        function renderNewArrivals() {
+            const newArrivalsList = document.getElementById('new-arrivals-list');
+            const newProducts = products.filter(p => p.isNew);
+            
+            newArrivalsList.innerHTML = newProducts.map(product => {
+                return `
+                <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col relative">
+                    <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-48 object-cover">
+                    <div class="p-4 flex flex-col flex-grow">
+                        <div class="flex-grow">
+                            <h3 class="text-xl font-semibold text-gray-800">${product.name}</h3>
+                            <p class="text-2xl font-bold text-amber-600 mt-2">Ksh ${product.price.toFixed(2)}</p>
+                        </div>
+                        <button onclick="openQuickView(${product.id})" class="mt-4 w-full text-center bg-gray-100 text-gray-800 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 transition-colors">Quick View</button>
+                        <h3 class="text-xl font-semibold text-gray-800">${product.name}</h3>
+                        <p class="text-2xl font-bold text-amber-600 mt-2 flex-grow">Ksh ${product.price.toFixed(2)}</p>
+                        <div class="flex items-center justify-between mt-4 space-x-2">
+                             <button onclick="addToWishlist(${product.id})" class="text-gray-500 hover:text-red-500 transition-colors p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 017.5 3C9.35 3 11 4.13 12 5.6C13 4.13 14.65 3 16.5 3A5.4 5.4 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                            </button>
+                            <button onclick="addToCart(${product.id})" class="bg-amber-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-600 transition-colors flex-grow">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+        /**
+         * Renders the product list on the store page.
+         */
+        function renderProducts() {
+            const sortValue = document.getElementById('sort-filter').value;
+            let sortedProducts = [...products]; // Create a copy to sort
+
+            if (sortValue === 'price-asc') {
+                sortedProducts.sort((a, b) => a.price - b.price);
+            } else if (sortValue === 'price-desc') {
+                sortedProducts.sort((a, b) => b.price - a.price);
+            }
+            // 'default' case doesn't require sorting, it will use the original order.
+            // If you wanted a specific default sort, like by ID, you could add:
+            // else { sortedProducts.sort((a, b) => a.id - b.id); }
+
+
+            const productList = document.getElementById('product-list');
+            
+            productList.innerHTML = sortedProducts.map(product => {
+                return `
+                <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col relative">
+                    <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-48 object-cover">
+                    <div class="p-4 flex flex-col flex-grow">
+                        <div class="flex-grow">
+                            <h3 class="text-xl font-semibold text-gray-800">${product.name}</h3>
+                            <p class="text-2xl font-bold text-amber-600 mt-2">Ksh ${product.price.toFixed(2)}</p>
+                        </div>
+                        <button onclick="openQuickView(${product.id})" class="mt-4 w-full text-center bg-gray-100 text-gray-800 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 transition-colors">Quick View</button>
+                        <div class="flex items-center justify-between mt-6 space-x-2">
+                             <button onclick="addToWishlist(${product.id})" class="text-gray-500 hover:text-red-500 transition-colors p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 017.5 3C9.35 3 11 4.13 12 5.6C13 4.13 14.65 3 16.5 3A5.4 5.4 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                            </button>
+                            <button onclick="addToCart(${product.id})" class="bg-amber-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-600 transition-colors flex-grow">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+        
+        /**
+         * Adds an item to the shopping cart.
+         * @param {number} productId - The ID of the product to add.
+         */
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingItem = cartItems.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cartItems.push({ ...product, quantity: 1 });
+            }
+
+            updateCartCount();
+            renderCart();
+            showMessage(`${product.name} added to cart!`);
+        }
+        
+        /**
+         * Adds an item to the wishlist.
+         * @param {number} productId - The ID of the product to add.
+         */
+        function addToWishlist(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingItem = wishlistItems.find(item => item.id === productId);
+            if (existingItem) {
+                showMessage(`${product.name} is already in your wishlist.`, 'error');
+            } else {
+                wishlistItems.push({ ...product });
+                updateWishlistCount();
+                renderWishlist();
+                showMessage(`${product.name} added to wishlist!`);
+            }
+        }
+
+        /**
+         * Removes an item from the shopping cart.
+         * @param {number} productId - The ID of the item to remove.
+         */
+        function removeFromCart(productId) {
+            const itemIndex = cartItems.findIndex(item => item.id === productId);
+            if (itemIndex > -1) {
+                cartItems.splice(itemIndex, 1);
+            }
+            updateCartCount();
+            renderCart();
+        }
+        
+        /**
+         * Removes an item from the wishlist.
+         * @param {number} productId - The ID of the item to remove.
+         */
+        function removeFromWishlist(productId) {
+            const itemIndex = wishlistItems.findIndex(item => item.id === productId);
+            if (itemIndex > -1) {
+                wishlistItems.splice(itemIndex, 1);
+            }
+            updateWishlistCount();
+            renderWishlist();
+        }
+
+
+        /**
+         * Clears all items from the shopping cart.
+         */
+        function clearCart() {
+            if (cartItems.length > 0) {
+                cartItems.length = 0; // Clear the array
+                updateCartCount();
+                renderCart();
+                showMessage('Your cart has been cleared.', 'success');
+            } else {
+                showMessage('Your cart is already empty.', 'error');
+            }
+        }
+
+        /**
+         * Renders the shopping cart page with current items.
+         */
+        function renderCart() {
+            const cartContainer = document.getElementById('cart-items-container');
+            const cartSubtotal = document.getElementById('cart-subtotal');
+            const cartTotal = document.getElementById('cart-total');
+
+            if (cartItems.length === 0) {
+                cartContainer.innerHTML = '<p class="text-center text-gray-800 text-xl">Your cart is empty.</p>';
+                cartSubtotal.textContent = 'Ksh 0.00';
+                cartTotal.textContent = 'Ksh 0.00';
+                return;
+            }
+
+            const cartHtml = cartItems.map(item => `
+                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <img src="${item.imageUrl}" alt="${item.name}" class="w-20 h-20 rounded-lg object-cover mr-4">
+                        <div>
+                            <h4 class="text-xl font-semibold text-gray-800">${item.name}</h4>
+                            <p class="text-gray-800">Price: Ksh ${item.price.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-xl font-bold text-gray-800">x${item.quantity}</span>
+                        <p class="text-xl font-bold text-amber-600">Ksh ${(item.price * item.quantity).toFixed(2)}</p>
+                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.013 21H7.987a2 2 0 01-1.92-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            cartContainer.innerHTML = cartHtml;
+
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartSubtotal.textContent = `Ksh ${subtotal.toFixed(2)}`;
+            cartTotal.textContent = `Ksh ${(subtotal * 1.05).toFixed(2)}`; // Example: 5% tax
+        }
+        
+        /**
+         * Renders the wishlist page with current items.
+         */
+        function renderWishlist() {
+            const wishlistContainer = document.getElementById('wishlist-items-container');
+
+            if (wishlistItems.length === 0) {
+                wishlistContainer.innerHTML = '<p class="text-center text-gray-800 text-xl">Your wishlist is empty.</p>';
+                return;
+            }
+            
+            const wishlistHtml = wishlistItems.map(item => `
+                 <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col relative">
+                    <img src="${item.imageUrl}" alt="${item.name}" class="w-full h-48 object-cover">
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold text-gray-800">${item.name}</h3>
+                        <p class="text-2xl font-bold text-amber-600 mt-2 flex-grow">Ksh ${item.price.toFixed(2)}</p>
+                        <div class="flex items-center justify-between mt-4 space-x-2">
+                             <button onclick="removeFromWishlist(${item.id})" class="text-gray-500 hover:text-red-500 transition-colors p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 017.5 3C9.35 3 11 4.13 12 5.6C13 4.13 14.65 3 16.5 3A5.4 5.4 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                            </button>
+                            <button onclick="addToCart(${item.id}); showPage('cart-page');" class="bg-amber-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-600 transition-colors flex-grow">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            wishlistContainer.innerHTML = wishlistHtml;
+        }
+
+        /**
+         * Updates the cart count displayed in the header.
+         */
+        function updateCartCount() {
+            const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = count;
+            document.getElementById('mobile-cart-count').textContent = count;
+        }
+        
+        /**
+         * Updates the wishlist count displayed in the header.
+         */
+        function updateWishlistCount() {
+            const count = wishlistItems.length;
+            document.getElementById('wishlist-count').textContent = count;
+            document.getElementById('mobile-wishlist-count').textContent = count;
+        }
+
+
+        /**
+         * Initiates the checkout process by generating an order summary and showing the checkout modal.
+         */
+        function checkout() {
+            if (cartItems.length === 0) {
+                showMessage('Your cart is empty!', 'error');
+                return;
+            }
+
+            const checkoutSummaryContainer = document.getElementById('checkout-summary');
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = subtotal * 1.05; // Example 5% tax
+
+            let orderText = "Hello Cheryl's Crochet, I would like to place the following order:\n\n";
+            
+            checkoutSummaryContainer.innerHTML = cartItems.map(item => {
+                const itemTotal = item.price * item.quantity;
+                orderText += `- ${item.name} (x${item.quantity}) - Ksh ${itemTotal.toFixed(2)}\n`;
+                return `
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-gray-800">${item.name} x ${item.quantity}</span>
+                        <span class="font-semibold text-gray-800">Ksh ${itemTotal.toFixed(2)}</span>
+                    </div>
+                `;
+            }).join('');
+
+            checkoutSummaryContainer.innerHTML += `
+                <div class="flex justify-between items-center pt-4 mt-4 border-t">
+                    <span class="text-lg font-bold text-amber-600">Total (incl. tax)</span>
+                    <span class="text-lg font-bold text-amber-600">Ksh ${total.toFixed(2)}</span>
+                </div>
+            `;
+
+            orderText += `\nTotal: Ksh ${total.toFixed(2)}\n\nThank you!`;
+
+            // Update WhatsApp and Email links
+            const businessPhoneNumber = "11234567890"; // Replace with your actual number, e.g., for US: 1 followed by area code and number
+            const businessEmail = "info@cheryls-crochet.com";
+            document.getElementById('whatsapp-link').href = `https://wa.me/${businessPhoneNumber}?text=${encodeURIComponent(orderText)}`;
+            document.getElementById('email-link').href = `mailto:${businessEmail}?subject=New Order from Cheryl's Crochet&body=${encodeURIComponent(orderText)}`;
+
+            // Show the modal
+            document.getElementById('checkout-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        /**
+         * Closes the checkout modal.
+         */
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        /**
+         * Opens the quick view modal for a specific product.
+         * @param {number} productId - The ID of the product to view.
+         */
+        function openQuickView(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const modal = document.getElementById('quick-view-modal');
+            const contentContainer = document.getElementById('quick-view-content');
+
+            contentContainer.innerHTML = `
+                <div>
+                    <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-auto rounded-lg shadow-md">
+                </div>
+                <div class="flex flex-col">
+                    <h3 class="text-4xl font-bold text-amber-800 font-heading">${product.name}</h3>
+                    <p class="text-3xl font-bold text-amber-600 my-4">Ksh ${product.price.toFixed(2)}</p>
+                    <p class="text-gray-700 text-lg mb-6 flex-grow">${product.description}</p>
+                    <div class="flex items-center justify-between mt-4 space-x-4">
+                        <button onclick="addToWishlist(${product.id})" class="text-gray-500 hover:text-red-500 transition-colors p-3 rounded-full border">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 017.5 3C9.35 3 11 4.13 12 5.6C13 4.13 14.65 3 16.5 3A5.4 5.4 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                        </button>
+                        <button onclick="addToCart(${product.id}); closeQuickView();" class="bg-amber-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-600 transition-colors flex-grow">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        /**
+         * Closes the quick view modal.
+         */
+        function closeQuickView() {
+            const modal = document.getElementById('quick-view-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal if clicking on the background overlay
+        document.getElementById('quick-view-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeQuickView();
+            }
+        });
+
+
+        // --- Contact Form Logic ---
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const message = document.getElementById('contact-message').value;
+
+            // In a real application, you would send this data to a server
+            console.log('Form submitted!', { name, email, message });
+            showMessage('Message sent successfully! We will get back to you soon.');
+
+            // Clear the form
+            contactForm.reset();
+        });
+        
+        // --- Back to Top Button Logic ---
+        const backToTopButton = document.getElementById('back-to-top-button');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) { // Show button after scrolling 300px
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+
+        // Expose functions to the global scope for onclick attributes
+        window.showPage = showPage;
+        window.toggleSearchBar = toggleSearchBar;
+        window.toggleDropdown = toggleDropdown;
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.clearCart = clearCart;
+        window.checkout = checkout;
+        window.closeCheckoutModal = closeCheckoutModal;
+        window.addToWishlist = addToWishlist;
+        window.removeFromWishlist = removeFromWishlist;
+        window.openQuickView = openQuickView;
+        window.closeQuickView = closeQuickView;
+        
+        // Initial setup on page load
+        window.onload = () => {
+            renderProducts();
+            renderNewArrivals();
+            renderCart();
+            renderWishlist();
+            updateWishlistCount();
+            showPage('home-page');
+            document.querySelector('.nav-link[data-page="home-page"]').classList.add('active');
+
+            // Add event listener for the sort filter
+            const sortFilter = document.getElementById('sort-filter');
+            sortFilter.addEventListener('change', renderProducts);
+        };
+
+    </script>
+</body>
+</html>
