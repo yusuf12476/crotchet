@@ -15,7 +15,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            @apply bg-stone-50 text-gray-800;
+            @apply bg-stone-50 text-gray-700;
         }
         .font-heading {
             font-family: 'Dancing Script', cursive;
@@ -28,7 +28,7 @@
             display: block;
         }
         .nav-link.active {
-            @apply text-amber-600 border-b-2 border-amber-600 font-semibold;
+            @apply text-amber-800 border-b-2 border-amber-700 font-semibold;
         }
         .dropdown-menu {
             display: none;
@@ -62,6 +62,13 @@
         #quick-view-modal.active {
             display: flex; /* Show when active */
         }
+        /* Policy Modals */
+        .policy-modal {
+            display: none; /* Hidden by default */
+        }
+        .policy-modal.active {
+            display: flex; /* Show when active */
+        }
          /* FAQ Accordion */
         details > summary {
             list-style: none;
@@ -81,6 +88,13 @@
             content: '-';
             transform: rotate(180deg);
         }
+        /* Featured Image Modal Styles */
+        #featured-image-modal {
+            display: none; /* Hidden by default */
+        }
+        #featured-image-modal.active {
+            display: flex; /* Show when active */
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -96,11 +110,11 @@
 
             <!-- Desktop Nav Links -->
             <div class="hidden md:flex space-x-8 items-center">
-                <a href="#" class="nav-link text-gray-700 hover:text-amber-600 transition-colors" data-page="home-page">Home</a>
+                <a href="#" class="nav-link text-gray-600 hover:text-amber-700 transition-colors" data-page="home-page">Home</a>
                 
                 <!-- Learn Dropdown -->
                 <div class="relative group">
-                    <button class="nav-link text-gray-700 hover:text-amber-600 transition-colors flex items-center" onclick="toggleDropdown('learn-dropdown')">
+                    <button class="nav-link text-gray-700 hover:text-amber-700 transition-colors flex items-center" onclick="toggleDropdown('learn-dropdown')">
                         Learn
                         <svg class="ml-1 h-4 w-4 transform transition-transform duration-200 group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -117,22 +131,20 @@
                     </div>
                 </div>
 
-                <a href="#" class="nav-link text-gray-700 hover:text-amber-600 transition-colors" data-page="store-page">Store</a>
-                <button id="search-button-desktop" onclick="toggleSearchBar()" class="text-gray-700 hover:text-amber-600 transition-colors">
+                <a href="#" class="nav-link text-gray-600 hover:text-amber-700 transition-colors" data-page="store-page">Store</a>
+                <button id="search-button-desktop" onclick="toggleSearchBar()" class="text-gray-600 hover:text-amber-700 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </button>
-                <a href="#" class="nav-link relative flex items-center text-gray-700 hover:text-amber-600 transition-colors" data-page="wishlist-page">
+                <a href="#" class="nav-link relative flex items-center text-gray-600 hover:text-amber-700 transition-colors" data-page="wishlist-page">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 017.5 3C9.35 3 11 4.13 12 5.6C13 4.13 14.65 3 16.5 3A5.4 5.4 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                     </svg>
                     <span id="wishlist-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
                 </a>
-                <a href="#" class="nav-link relative flex items-center bg-amber-500 text-white px-4 py-2 rounded-full hover:bg-amber-600 transition-colors" data-page="cart-page">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M3 1a1 1 0 000 2h.171l.635 3.176A6 6 0 0013.882 17H16a1 1 0 100-2h-2.118A4 4 0 0110.118 13H5.882a4 4 0 01-3.882-3H3a1 1 0 000-2h.118A4 4 0 015.882 7h2.237L8 4H4a1 1 0 000 2h.236l-1 5zM12 9a1 1 0 100-2 1 1 0 000 2zM8 9a1 1 0 100-2 1 1 0 000 2z" />
-                    </svg>
+                <a href="#" class="nav-link relative flex items-center bg-amber-700 text-white px-4 py-2 rounded-full hover:bg-amber-800 transition-colors" data-page="cart-page" title="Shopping Cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
                     <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
                 </a>
             </div>
@@ -147,48 +159,57 @@
     </header>
 
     <!-- Mobile Menu (Hidden by default) -->
-    <div id="mobile-menu" class="fixed top-16 left-0 w-full bg-white shadow-lg transition-transform duration-300 transform -translate-y-full md:hidden z-40">
-        <nav class="flex flex-col space-y-4 px-8 py-6">
-            <a href="#" class="nav-link text-gray-700 hover:text-amber-600 text-lg" data-page="home-page">Home</a>
-            <div class="relative">
-                 <button class="text-gray-700 hover:text-amber-600 text-lg flex items-center w-full justify-between" onclick="toggleDropdown('mobile-learn-dropdown')">
-                    Learn
-                    <svg class="ml-1 h-4 w-4 transform transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-                <div id="mobile-learn-dropdown" class="mt-2 space-y-2 pl-4 dropdown-menu">
-                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="tutorials-page">Tutorials</a>
-                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="blog-page">Blog</a>
-                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="projects-page">Projects</a>
-                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="about-page">About</a>
-                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="faqs-page">FAQs</a>
-                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="testimonials-page">Testimonials</a>
-                    <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="contact-page">Contact</a>
+    <div id="mobile-menu-container" class="fixed inset-0 z-40 md:hidden hidden">
+        <!-- Overlay -->
+        <div id="mobile-menu-overlay" class="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300 opacity-0"></div>
+        
+        <!-- Menu Panel -->
+        <div id="mobile-menu" class="relative h-full w-3/4 max-w-sm bg-white shadow-lg transition-transform duration-300 transform -translate-x-full">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <a href="#" class="text-2xl font-semibold text-amber-800 font-heading" onclick="showPage('home-page'); return false;">Cheryl's Crochet</a>
+                    <button id="mobile-menu-close-button" class="text-gray-600 hover:text-gray-900">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
                 </div>
-            </div>
-            <a href="#" class="nav-link text-gray-700 hover:text-amber-600 text-lg" data-page="store-page">Store</a>
-            <button id="search-button-mobile" onclick="toggleSearchBar()" class="flex items-center text-gray-700 hover:text-amber-600 text-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <span>Search</span>
-            </button>
-            <a href="#" class="nav-link relative flex items-center justify-center text-gray-700 hover:text-amber-600 transition-colors text-lg" data-page="wishlist-page">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 017.5 3C9.35 3 11 4.13 12 5.6C13 4.13 14.65 3 16.5 3A5.4 5.4 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-                <span id="mobile-wishlist-count" class="absolute -top-2 right-14 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
-                <span>Wishlist</span>
-            </a>
-            <a href="#" class="nav-link relative flex items-center justify-center bg-amber-500 text-white px-4 py-2 rounded-full hover:bg-amber-600 transition-colors text-lg" data-page="cart-page">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M3 1a1 1 0 000 2h.171l.635 3.176A6 6 0 0013.882 17H16a1 1 0 100-2h-2.118A4 4 0 0110.118 13H5.882a4 4 0 01-3.882-3H3a1 1 0 000-2h.118A4 4 0 015.882 7h2.237L8 4H4a1 1 0 000 2h.236l-1 5zM12 9a1 1 0 100-2 1 1 0 000 2zM8 9a1 1 0 100-2 1 1 0 000 2z" />
+                <nav class="flex flex-col space-y-4">
+                    <a href="#" class="nav-link text-gray-600 hover:text-amber-700 text-lg" data-page="home-page">Home</a>
+                    <div class="relative">
+                        <button class="text-gray-600 hover:text-amber-700 text-lg flex items-center w-full justify-between" onclick="toggleDropdown('mobile-learn-dropdown')">
+                            Learn
+                            <svg class="ml-1 h-4 w-4 transform transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div id="mobile-learn-dropdown" class="mt-2 space-y-2 pl-4 dropdown-menu">
+                            <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="tutorials-page">Tutorials</a>
+                            <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="blog-page">Blog</a>
+                            <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="projects-page">Projects</a>
+                            <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="about-page">About</a>
+                            <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="faqs-page">FAQs</a>
+                            <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="testimonials-page">Testimonials</a>
+                            <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="contact-page">Contact</a>
+                        </div>
                     </svg>
-                <span id="mobile-cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
-                <span>Cart</span>
-            </a>
-        </nav>
+                    </div>
+                    <a href="#" class="nav-link text-gray-600 hover:text-amber-700 text-lg" data-page="store-page">Store</a>
+                    <button id="search-button-mobile" onclick="toggleSearchBar()" class="flex items-center text-gray-600 hover:text-amber-700 text-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        <span>Search</span>
+                    </button>
+                    <a href="#" class="nav-link relative flex items-center text-gray-600 hover:text-amber-700 transition-colors text-lg" data-page="wishlist-page">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 017.5 3C9.35 3 11 4.13 12 5.6C13 4.13 14.65 3 16.5 3A5.4 5.4 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span>Wishlist</span>
+                        <span id="mobile-wishlist-count" class="ml-auto bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </a>
+                    <a href="#" class="nav-link relative flex items-center text-gray-600 hover:text-amber-700 transition-colors text-lg" data-page="cart-page" title="Shopping Cart">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+                        <span>Cart</span>
+                        <span id="mobile-cart-count" class="ml-auto bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
     </div>
 
     <!-- Main Content Container -->
@@ -222,38 +243,38 @@
                 <div class="absolute inset-0 bg-gray-900 opacity-60"></div>
                 <div class="container mx-auto text-center py-12 px-4 relative z-10 text-white">
                     <h1 class="text-6xl md:text-7xl font-extrabold leading-tight mb-4 font-heading">Crafting Joy, One Stitch at a Time.</h1>
-                    <p class="text-2xl md:text-3xl mb-8">Discover a world of inspiration, patterns, and quality yarn to bring your crochet dreams to life.</p>
+                    <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Discover a world of inspiration, patterns, and quality yarn to bring your crochet dreams to life.</p>
                     <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
-                        <a href="#" data-page="store-page" class="nav-link bg-amber-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-amber-700 transition-colors">Shop Yarn & Tools</a>
-                        <a href="#" data-page="tutorials-page" class="nav-link bg-transparent text-white px-8 py-3 rounded-full font-semibold border border-white hover:bg-white hover:text-amber-600 transition-colors">Start Learning</a>
+                        <a href="#" data-page="store-page" class="nav-link bg-amber-700 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-amber-800 transition-transform duration-200 hover:scale-105">Shop Yarn & Tools</a>
+                        <a href="#" data-page="tutorials-page" class="nav-link bg-transparent text-white px-8 py-3 rounded-full font-semibold border-2 border-white hover:bg-white hover:text-amber-800 transition-all duration-200 hover:scale-105">Start Learning</a>
                     </div>
                 </div>
             </div>
             
             <!-- Other home page content can go here -->
-            <div class="container mx-auto p-4 md:p-8">
+            <div class="container mx-auto p-4 md:p-8 bg-stone-50">
                 <div class="py-12">
                      <h2 class="text-4xl font-bold text-center text-amber-800 mb-8 font-heading">Featured Projects</h2>
                      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                         <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                             <img src="images/amigurumi bunny.webp" alt="Amigurumi Bunny" class="w-full h-48 object-cover">
+                         <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                             <img src="images/amigurumi bunny.webp" alt="Amigurumi Bunny" class="w-full h-48 object-cover cursor-pointer" onclick="openFeaturedImageModal('images/amigurumi bunny.webp')">
                              <div class="p-6">
-                                 <h3 class="text-2xl font-semibold text-gray-800 font-heading">Cozy Bear Pattern</h3>
-                                 <p class="text-gray-600 mt-2">A delightful pattern to create a huggable amigurumi bunny for your loved ones.</p>
+                                 <h3 class="text-2xl font-semibold text-gray-800 font-heading">Amigurumi bunny</h3>
+                                 <p class="text-gray-700 mt-2">A delightful pattern to create a huggable amigurumi bunny for your loved ones.</p>
                              </div>
                          </div>
-                         <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                             <img src="https://placehold.co/600x400/D4F2F2/black?text=Waffle+Stitch+Blanket" alt="Waffle Stitch Blanket" class="w-full h-48 object-cover">
+                         <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                             <img src="images/waffle stitch blanket.jpg" alt="Waffle Stitch Blanket" class="w-full h-48 object-cover cursor-pointer" onclick="openFeaturedImageModal('images/waffle stitch blanket.jpg')">
                              <div class="p-6">
                                  <h3 class="text-2xl font-semibold text-gray-800 font-heading">Waffle Stitch Blanket</h3>
-                                 <p class="text-gray-600 mt-2">Learn the beautiful texture of the waffle stitch to create this cozy throw.</p>
+                                 <p class="text-gray-700 mt-2">Learn the beautiful texture of the waffle stitch to create this cozy throw.</p>
                              </div>
                          </div>
-                         <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                             <img src="https://placehold.co/600x400/E8F2D4/black?text=Crochet+Cardigan" alt="Crochet Cardigan" class="w-full h-48 object-cover">
+                         <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                             <img src="images/modern cardigan pattern.webp" alt="Crochet Cardigan" class="w-full h-48 object-cover cursor-pointer" onclick="openFeaturedImageModal('images/modern cardigan pattern.webp')">
                              <div class="p-6">
                                  <h3 class="text-2xl font-semibold text-gray-800 font-heading">Modern Cardigan Pattern</h3>
-                                 <p class="text-gray-600 mt-2">A stylish and wearable piece that's easier to make than you think!</p>
+                                 <p class="text-gray-700 mt-2">A stylish and wearable piece that's easier to make than you think!</p>
                              </div>
                          </div>
                      </div>
@@ -265,97 +286,214 @@
         <section id="about-page" class="page-section p-4 md:p-8">
             <div class="container mx-auto py-12">
                 <h2 class="text-5xl font-bold text-center text-amber-800 mb-6 font-heading">Our Story</h2>
-                <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
-                    <p class="text-xl text-gray-800 mb-4">
+                <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-sm mb-12">
+                    <p class="text-lg text-gray-700 mb-4">
                         Cheryl's Crochet was born from a simple passion: the joy of creating beautiful, handmade items with a hook and some yarn. What started as a personal hobby quickly grew into a desire to share this wonderful craft with others. We believe that crocheting is more than just a pastime; it's a form of therapy, a way to express creativity, and a means to connect with a global community of makers.
                     </p>
-                    <p class="text-xl text-gray-800 mb-4">
+                    <p class="text-lg text-gray-700 mb-4">
                         Our mission is to provide high-quality materials, easy-to-follow tutorials, and endless inspiration for crocheters of all skill levels. Whether you're a complete beginner picking up a hook for the first time or a seasoned artisan looking for your next challenge, we're here to support you on your creative journey.
                     </p>
-                    <p class="text-xl text-gray-800">
+                    <p class="text-lg text-gray-700">
                         Thank you for being a part of our story. Let's create something beautiful together!
                     </p>
+                </div>
+
+                <!-- Meet the Founder -->
+                <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-sm mb-12">
+                    <h3 class="text-4xl font-bold text-center text-amber-800 mb-8 font-heading">Meet Cheryl</h3>
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <img src="images/5945145365676279887(1).jpg" alt="Founder Cheryl" class="w-48 h-48 rounded-full object-cover shadow-lg">
+                        <p class="text-lg text-gray-700">
+                            Hi, I'm Cheryl! My grandmother taught me to crochet when I was ten, and I've been hooked ever since. For me, crochet is a way to slow down, be mindful, and create tangible warmth and love. I started this website to build a community where we can all share in that joy. When I'm not crocheting, you can find me tending to my garden or curled up with a good book and a cup of tea. I'm so glad you're here!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Our Philosophy -->
+                <div class="max-w-4xl mx-auto">
+                    <h3 class="text-4xl font-bold text-center text-amber-800 mb-8 font-heading">Our Philosophy</h3>
+                    <div class="grid md:grid-cols-3 gap-8 text-center">
+                        <div class="bg-white p-6 rounded-lg shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                            <div class="text-amber-700 mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg></div>
+                            <h4 class="text-2xl font-semibold text-gray-800 font-heading mb-2">Quality & Craftsmanship</h4>
+                            <p class="text-gray-700">We source only the best yarns and tools, believing that quality materials lead to beautiful, lasting creations.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                            <div class="text-amber-700 mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+                            <h4 class="text-2xl font-semibold text-gray-800 font-heading mb-2">Community & Connection</h4>
+                            <p class="text-gray-700">We're more than a store; we're a community of makers, here to support and inspire one another on our creative journeys.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                            <div class="text-amber-700 mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div>
+                            <h4 class="text-2xl font-semibold text-gray-800 font-heading mb-2">Inspiration & Education</h4>
+                            <p class="text-gray-700">From beginner tutorials to advanced patterns, we are dedicated to providing the resources you need to grow your skills.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Video Tutorials Page -->
-        <section id="tutorials-page" class="page-section p-4 md:p-8">
+        <section id="tutorials-page" class="page-section p-4 md:p-8 bg-stone-50">
             <div class="container mx-auto py-12">
                 <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Video Tutorials</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Tutorial 1 -->
-                    <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="bg-white rounded-lg shadow-sm p-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                         <div class="aspect-w-16 aspect-h-9 mb-4 overflow-hidden rounded-lg">
                             <iframe class="w-full h-full" src="https://www.youtube.com/embed/a-W22v-Q7eU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         <h3 class="text-3xl font-semibold text-gray-800 mb-2 font-heading">Beginner's Guide to Single Crochet</h3>
-                        <p class="text-gray-800">Learn the fundamental stitch that forms the basis of countless projects. Perfect for first-time crocheters!</p>
+                        <p class="text-gray-700">Learn the fundamental stitch that forms the basis of countless projects. Perfect for first-time crocheters!</p>
                     </div>
                     <!-- Tutorial 2 -->
-                    <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="bg-white rounded-lg shadow-sm p-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                         <div class="aspect-w-16 aspect-h-9 mb-4 overflow-hidden rounded-lg">
                             <iframe class="w-full h-full" src="https://www.youtube.com/embed/U3l0_Q7dC2c" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         <h3 class="text-3xl font-semibold text-gray-800 mb-2 font-heading">How to Read a Crochet Pattern</h3>
-                        <p class="text-gray-800">Demystify the language of patterns with our step-by-step guide. You'll be reading patterns like a pro in no time!</p>
+                        <p class="text-gray-700">Demystify the language of patterns with our step-by-step guide. You'll be reading patterns like a pro in no time!</p>
                     </div>
                     <!-- Tutorial 3 -->
-                    <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="bg-white rounded-lg shadow-sm p-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                         <div class="aspect-w-16 aspect-h-9 mb-4 overflow-hidden rounded-lg">
                             <iframe class="w-full h-full" src="https://www.youtube.com/embed/5F2o3rD57iE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         <h3 class="text-3xl font-semibold text-gray-800 mb-2 font-heading">Crocheting a Magic Ring</h3>
-                        <p class="text-gray-800">The perfect start for any amigurumi or round project. Master this technique for seamless joins.</p>
+                        <p class="text-gray-700">The perfect start for any amigurumi or round project. Master this technique for seamless joins.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Blog Page -->
-        <section id="blog-page" class="page-section p-4 md:p-8">
+        <section id="blog-page" class="page-section p-4 md:p-8 bg-stone-50">
             <div class="container mx-auto py-12">
                 <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Our Blog</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Blog Post 1 -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="https://placehold.co/600x400/966F33/white?text=Blog+Post+1" alt="Blog post image" class="w-full h-48 object-cover">
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                        <img src="images/5 must have hooks for crotchet.webp" alt="Blog post image" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h3 class="text-3xl font-semibold text-gray-800 mb-2 font-heading">5 Must-Have Hooks for Every Crocheter</h3>
-                            <p class="text-gray-800 mb-4">Choosing the right hook can make all the difference. We break down the top five hooks you should add to your collection.</p>
-                            <a href="#" class="text-amber-600 font-semibold hover:underline">Read More &rarr;</a>
+                            <p class="text-gray-700 mb-4">Choosing the right hook can make all the difference. We break down the top five hooks you should add to your collection.</p>
+                            <a href="#" onclick="showPage('blog-post-1'); return false;" class="text-amber-800 font-semibold hover:underline">Read More &rarr;</a>
                         </div>
                     </div>
                     <!-- Blog Post 2 -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="https://placehold.co/600x400/C0C5B0/white?text=Blog+Post+2" alt="Blog post image" class="w-full h-48 object-cover">
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                        <img src="images/images (1).jpg" alt="Blog post image" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h3 class="text-3xl font-semibold text-gray-800 mb-2 font-heading">The Best Yarn for Amigurumi</h3>
-                            <p class="text-gray-800 mb-4">Making stuffed toys? We've got the scoop on the perfect yarn types, weights, and fibers for creating adorable amigurumi.</p>
-                            <a href="#" class="text-amber-600 font-semibold hover:underline">Read More &rarr;</a>
+                            <p class="text-gray-700 mb-4">Making stuffed toys? We've got the scoop on the perfect yarn types, weights, and fibers for creating adorable amigurumi.</p>
+                            <a href="#" onclick="showPage('blog-post-2'); return false;" class="text-amber-800 font-semibold hover:underline">Read More &rarr;</a>
                         </div>
                     </div>
                     <!-- Blog Post 3 -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="https://placehold.co/600x400/9A7C5F/white?text=Blog+Post+3" alt="Blog post image" class="w-full h-48 object-cover">
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                        <img src="images/images.jpg" alt="Blog post image" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h3 class="text-3xl font-semibold text-gray-800 mb-2 font-heading">Getting Started with Crochet Blankets</h3>
-                            <p class="text-gray-800 mb-4">Your first big project doesn't have to be intimidating! Our guide will walk you through everything you need to know.</p>
-                            <a href="#" class="text-amber-600 font-semibold hover:underline">Read More &rarr;</a>
+                            <p class="text-gray-700 mb-4">Your first big project doesn't have to be intimidating! Our guide will walk you through everything you need to know.</p>
+                            <a href="#" onclick="showPage('blog-post-3'); return false;" class="text-amber-800 font-semibold hover:underline">Read More &rarr;</a>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Post 1 Page -->
+        <section id="blog-post-1" class="page-section p-4 md:p-8 bg-stone-50">
+            <div class="container mx-auto py-12">
+                <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+                    <img src="images/5 must have hooks for crotchet.webp" alt="A collection of different crochet hooks" class="w-full h-auto object-cover rounded-lg mb-8">
+                    <h2 class="text-5xl font-bold text-amber-800 mb-4 font-heading">5 Must-Have Hooks for Every Crocheter</h2>
+                    <p class="text-gray-500 mb-6">Published on September 25, 2024 by Cheryl</p>
+                    <div class="prose lg:prose-xl max-w-none text-gray-700 space-y-4">
+                        <p>Choosing the right crochet hook can transform your crafting experience. A good hook feels comfortable in your hand, glides smoothly through yarn, and helps you maintain even tension. But with so many options available—aluminum, bamboo, ergonomic, tapered, inline—where do you start? Here are our top five must-have hooks for every crocheter's toolkit.</p>
+                        
+                        <h3 class="text-3xl font-semibold text-gray-800 font-heading">1. The Ergonomic Handle Hook</h3>
+                        <p>If you spend hours crocheting, an ergonomic hook is a game-changer. These hooks feature a larger, soft-grip handle that reduces strain on your hands and wrists. Brands like Clover Amour and Tulip Etimo are famous for their comfortable designs, making them a worthy investment for any serious crafter.</p>
+
+                        <h3 class="text-3xl font-semibold text-gray-800 font-heading">2. The Classic Aluminum Hook</h3>
+                        <p>Simple, affordable, and reliable. The classic aluminum hook (like those from Susan Bates or Boye) is a staple. They are lightweight, and the yarn slides effortlessly over their smooth surface. They come in a vast range of sizes and are perfect for beginners and experts alike.</p>
+
+                        <h3 class="text-3xl font-semibold text-gray-800 font-heading">3. The Warm Bamboo Hook</h3>
+                        <p>For those who prefer natural materials, bamboo hooks are a fantastic choice. They are incredibly lightweight and warm to the touch. Some crocheters find that bamboo provides a bit more grip on the yarn, which can be helpful for slippery fibers like silk or bamboo yarn.</p>
+
+                        <h3 class="text-3xl font-semibold text-gray-800 font-heading">4. The Precision Steel Hook</h3>
+                        <p>When working with fine crochet thread for projects like doilies, lace, or delicate jewelry, a steel hook is essential. These tiny, durable hooks are designed to work with thin threads and create intricate, detailed stitch work that larger hooks can't handle.</p>
+
+                        <h3 class="text-3xl font-semibold text-gray-800 font-heading">5. A Set of Interchangeable Hooks</h3>
+                        <p>An interchangeable set is the ultimate tool for versatility. These sets typically come with multiple hook heads in various sizes that can be attached to a single handle. This is not only space-saving but also allows you to find the perfect combination of handle and hook size for your comfort.</p>
+                    </div>
+                    <div class="mt-8 border-t pt-6">
+                        <a href="#" onclick="showPage('blog-page'); return false;" class="text-amber-800 font-semibold hover:underline">&larr; Back to Blog</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Post 2 Page -->
+        <section id="blog-post-2" class="page-section p-4 md:p-8 bg-stone-50">
+            <div class="container mx-auto py-12">
+                <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+                    <img src="images/images (1).jpg" alt="Colorful yarn suitable for amigurumi" class="w-full h-auto object-cover rounded-lg mb-8">
+                    <h2 class="text-5xl font-bold text-amber-800 mb-4 font-heading">The Best Yarn for Amigurumi</h2>
+                    <p class="text-gray-500 mb-6">Published on September 20, 2024 by Cheryl</p>
+                    <div class="prose lg:prose-xl max-w-none text-gray-700 space-y-4">
+                        <p>Amigurumi, the Japanese art of crocheting small, stuffed creatures, requires a specific type of yarn to achieve that perfect, neat look. The right yarn should have excellent stitch definition, be durable, and come in a vibrant array of colors. Here’s our guide to the best yarns for your amigurumi projects.</p>
+                        
+                        <h3 class="text-3xl font-semibold text-gray-800 font-heading">1. 100% Cotton Yarn</h3>
+                        <p>Cotton is the king of amigurumi yarn. It's not very stretchy, which means your stitches will be tight and well-defined, preventing the stuffing from showing through. It's also strong, holds its shape well, and is available in a massive range of colors. Look for mercerized cotton for a beautiful sheen and even better stitch definition.</p>
+
+                        <h3 class="text-3xl font-semibold text-gray-800 font-heading">2. Acrylic Yarn</h3>
+                        <p>Acrylic is another popular and budget-friendly choice. It's hypoallergenic, durable, and machine washable, making it great for toys intended for children. While some acrylics can be a bit fuzzy, many modern acrylic yarns are soft and smooth, providing good results for amigurumi.</p>
+
+                        <h3 class="text-3xl font-semibold text-gray-800 font-heading">3. Wool Yarn</h3>
+                        <p>While less common for amigurumi, wool can create wonderfully soft and cuddly toys. It has a natural elasticity that can be forgiving, but it can also make it harder to get very tight stitches. Wool is also great for "felting" your amigurumi to create a unique, seamless fabric look.</p>
+                    </div>
+                    <div class="mt-8 border-t pt-6">
+                        <a href="#" onclick="showPage('blog-page'); return false;" class="text-amber-800 font-semibold hover:underline">&larr; Back to Blog</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Post 3 Page -->
+        <section id="blog-post-3" class="page-section p-4 md:p-8 bg-stone-50">
+            <div class="container mx-auto py-12">
+                <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+                    <img src="images/images.jpg" alt="A cozy, partially finished crochet blanket" class="w-full h-auto object-cover rounded-lg mb-8">
+                    <h2 class="text-5xl font-bold text-amber-800 mb-4 font-heading">Getting Started with Crochet Blankets</h2>
+                    <p class="text-gray-500 mb-6">Published on September 15, 2024 by Cheryl</p>
+                    <div class="prose lg:prose-xl max-w-none text-gray-700 space-y-4">
+                        <p>A crochet blanket is often one of the first large-scale projects a new crocheter tackles. It's a rewarding and practical item to make, but it can also feel intimidating. Don't worry! With a few tips, you'll be on your way to creating a cozy, beautiful blanket.</p>
+                        
+                        <h3 class="text-3xl font-semibold text-gray-800 font-heading">1. Choose the Right Yarn and Hook</h3>
+                        <p>For your first blanket, choose a chunky or bulky weight yarn. It works up much faster, which is incredibly motivating! Pair it with a large hook (check the yarn label for recommendations). A soft, machine-washable acrylic or a cotton blend is a great, low-maintenance choice.</p>
+
+                        <h3 class="text-3xl font-semibold text-gray-800 font-heading">2. Start with a Simple Stitch</h3>
+                        <p>You don't need a complex stitch to make a beautiful blanket. Simple stitches like single crochet, half-double crochet, or double crochet create a lovely fabric. The "granny stripe" or "corner-to-corner" (C2C) patterns are also fantastic for beginners and create a stunning visual effect.</p>
+
+                        <h3 class="text-3xl font-semibold text-gray-800 font-heading">3. Make a Gauge Swatch</h3>
+                        <p>It might seem like a chore, but making a small test square (a gauge swatch) is crucial. It helps you see if your tension is right and allows you to calculate how big your final blanket will be and how much yarn you'll need. It's better to spend 20 minutes on a swatch than to run out of yarn halfway through!</p>
+                    </div>
+                    <div class="mt-8 border-t pt-6">
+                        <a href="#" onclick="showPage('blog-page'); return false;" class="text-amber-800 font-semibold hover:underline">&larr; Back to Blog</a>
                     </div>
                 </div>
             </div>
         </section>
         
         <!-- Crochet Projects Page -->
-        <section id="projects-page" class="page-section p-4 md:p-8">
+        <section id="projects-page" class="page-section p-4 md:p-8 bg-stone-50">
             <div class="container mx-auto py-12">
                 <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Inspiration Gallery</h2>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                     <!-- Project 1 -->
-                    <div class="relative group rounded-lg overflow-hidden shadow-lg">
-                        <img src="https://placehold.co/600x600/F2E8D4/black?text=Project+1" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
+                    <div class="relative group rounded-lg overflow-hidden shadow-md">
+                        <img src="images/granny square bag.jpg" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
                         <div class="absolute inset-0 bg-black bg-opacity-50 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div class="p-4 text-white">
                                 <h3 class="text-xl font-semibold font-heading">Granny Square Bag</h3>
@@ -364,8 +502,8 @@
                         </div>
                     </div>
                     <!-- Project 2 -->
-                    <div class="relative group rounded-lg overflow-hidden shadow-lg">
-                        <img src="https://placehold.co/600x600/D4F2F2/black?text=Project+2" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
+                    <div class="relative group rounded-lg overflow-hidden shadow-md">
+                        <img src="images/amigurumi bunny.webp" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
                         <div class="absolute inset-0 bg-black bg-opacity-50 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div class="p-4 text-white">
                                 <h3 class="text-xl font-semibold font-heading">Amigurumi Bunny</h3>
@@ -374,8 +512,8 @@
                         </div>
                     </div>
                     <!-- Project 3 -->
-                    <div class="relative group rounded-lg overflow-hidden shadow-lg">
-                        <img src="https://placehold.co/600x600/E8F2D4/black?text=Project+3" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
+                    <div class="relative group rounded-lg overflow-hidden shadow-md">
+                        <img src="images/chunky throw blanket.jpg" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
                         <div class="absolute inset-0 bg-black bg-opacity-50 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div class="p-4 text-white">
                                 <h3 class="text-xl font-semibold font-heading">Chunky Throw Blanket</h3>
@@ -384,8 +522,8 @@
                         </div>
                     </div>
                     <!-- Project 4 -->
-                    <div class="relative group rounded-lg overflow-hidden shadow-lg">
-                        <img src="https://placehold.co/600x600/F2D4E8/black?text=Project+4" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
+                    <div class="relative group rounded-lg overflow-hidden shadow-md">
+                        <img src="images/crotchet plant hanger.jpg" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
                         <div class="absolute inset-0 bg-black bg-opacity-50 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div class="p-4 text-white">
                                 <h3 class="text-xl font-semibold font-heading">Crochet Plant Hanger</h3>
@@ -394,8 +532,8 @@
                         </div>
                     </div>
                     <!-- Project 5 -->
-                    <div class="relative group rounded-lg overflow-hidden shadow-lg">
-                        <img src="https://placehold.co/600x600/D4D4F2/black?text=Project+5" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
+                    <div class="relative group rounded-lg overflow-hidden shadow-md">
+                        <img src="images/chevron scarf.webp" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105">
                         <div class="absolute inset-0 bg-black bg-opacity-50 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div class="p-4 text-white">
                                 <h3 class="text-xl font-semibold font-heading">Chevron Scarf</h3>
@@ -404,8 +542,8 @@
                         </div>
                     </div>
                     <!-- Project 6 -->
-                    <div class="relative group rounded-lg overflow-hidden shadow-lg">
-                        <img src="https://placehold.co/600x600/F2F2D4/black?text=Project+6" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:opacity-100">
+                    <div class="relative group rounded-lg overflow-hidden shadow-md">
+                        <img src="images/crotchet coaster.jpg" alt="Crochet project image" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:opacity-100">
                         <div class="absolute inset-0 bg-black bg-opacity-50 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div class="p-4 text-white">
                                 <h3 class="text-xl font-semibold font-heading">Crochet Coasters</h3>
@@ -418,38 +556,63 @@
         </section>
 
         <!-- Store Page -->
-        <section id="store-page" class="page-section p-4 md:p-8">
+        <section id="store-page" class="page-section p-4 md:p-8 bg-stone-50">
             <div class="container mx-auto py-12">
                 <!-- New Arrivals Section -->
-                <div class="mb-16">
-                    <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">New Arrivals</h2>
-                    <div id="new-arrivals-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        <!-- New arrivals will be generated here by JavaScript -->
+                <div class="mb-16 relative">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-5xl font-bold text-amber-800 font-heading">New Arrivals</h2>
+                        <div class="flex space-x-2">
+                            <button id="new-arrivals-prev" class="bg-white border border-amber-700 text-amber-700 rounded-full w-10 h-10 flex items-center justify-center hover:bg-amber-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"><i class="fas fa-chevron-left"></i></button>
+                            <button id="new-arrivals-next" class="bg-white border border-amber-700 text-amber-700 rounded-full w-10 h-10 flex items-center justify-center hover:bg-amber-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div id="new-arrivals-container" class="overflow-x-hidden">
+                        <div id="new-arrivals-list" class="flex gap-6 transition-transform duration-500 ease-in-out">
+                            <!-- New arrivals will be generated here by JavaScript -->
+                        </div>
                     </div>
                 </div>
-                <!-- All Products Section with Filter -->
-                <div class="flex flex-col md:flex-row justify-between items-center mb-8">
-                    <h2 class="text-5xl font-bold text-amber-800 font-heading mb-4 md:mb-0">All Products</h2>
-                    <div class="flex items-center">
-                        <label for="sort-filter" class="mr-2 text-gray-700 font-medium">Sort by:</label>
-                        <select id="sort-filter" class="px-4 py-2 border rounded-lg focus:ring focus:ring-amber-200 focus:outline-none">
-                            <option value="default">Default</option>
-                            <option value="price-asc">Price: Low to High</option>
-                            <option value="price-desc">Price: High to Low</option>
-                        </select>
+                <!-- All Products Section with Filters -->
+                <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                    <h2 id="all-products-heading" class="text-5xl font-bold text-amber-800 font-heading mb-4 md:mb-0">All Products</h2>
+                    <div class="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+                        <!-- Product Search -->
+                        <div class="relative w-full sm:w-auto">
+                            <input type="text" id="product-search-input" placeholder="Search products..." class="w-full sm:w-64 px-4 py-2 border rounded-lg focus:ring focus:ring-amber-200 focus:outline-none pr-10">
+                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            </span>
+                        </div>
+                        <!-- Sort Filter -->
+                        <div class="flex items-center w-full sm:w-auto">
+                            <label for="sort-filter" class="mr-2 text-gray-700 font-medium">Sort by:</label>
+                            <select id="sort-filter" class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-amber-200 focus:outline-none bg-white">
+                                <option value="default">Default</option>
+                                <option value="price-asc">Price: Low to High</option>
+                                <option value="price-desc">Price: High to Low</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div id="category-filters" class="flex flex-wrap justify-center gap-2 mb-8">
+                    <!-- Category filter buttons will be generated here -->
+                </div>
+
+                <div id="product-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     <!-- All products will be generated here by JavaScript -->
+                </div>
+                <div id="pagination-controls" class="flex justify-center items-center space-x-2 mt-12">
+                    <!-- Pagination controls will be generated here -->
                 </div>
             </div>
         </section>
         
         <!-- Wishlist Page -->
-        <section id="wishlist-page" class="page-section p-4 md:p-8">
+        <section id="wishlist-page" class="page-section p-4 md:p-8 bg-stone-50">
             <div class="container mx-auto py-12">
                 <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Your Wishlist</h2>
-                <div id="wishlist-items-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div id="wishlist-items-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     <!-- Wishlist items will be generated here by JavaScript -->
                 </div>
             </div>
@@ -457,10 +620,10 @@
 
 
         <!-- Shopping Cart Page -->
-        <section id="cart-page" class="page-section p-4 md:p-8">
+        <section id="cart-page" class="page-section p-4 md:p-8 bg-stone-50">
             <div class="container mx-auto py-12">
                 <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Your Shopping Cart</h2>
-                <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+                <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm p-6">
                     <div id="cart-items-container">
                         <!-- Cart items will be generated here by JavaScript -->
                     </div>
@@ -468,14 +631,14 @@
                         <div class="text-lg font-semibold text-gray-800">
                             Subtotal: <span id="cart-subtotal">Ksh 0.00</span>
                         </div>
-                        <div class="text-xl font-bold text-amber-600 mt-2">
+                        <div class="text-xl font-bold text-amber-800 mt-2">
                             Total: <span id="cart-total">Ksh 0.00</span>
                         </div>
                         <div class="flex flex-col md:flex-row items-end md:items-center space-y-2 md:space-y-0 md:space-x-4 mt-6">
                              <button onclick="clearCart()" class="bg-red-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-600 transition-colors w-full md:w-auto">
                                 Clear Cart
                             </button>
-                            <button onclick="checkout()" class="bg-amber-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-amber-700 transition-colors w-full md:w-auto">
+                            <button onclick="checkout()" class="bg-amber-700 text-white px-8 py-3 rounded-full font-semibold hover:bg-amber-800 transition-colors w-full md:w-auto">
                                 Proceed to Checkout
                             </button>
                         </div>
@@ -485,23 +648,23 @@
         </section>
         
         <!-- FAQs Page -->
-        <section id="faqs-page" class="page-section p-4 md:p-8">
+        <section id="faqs-page" class="page-section p-4 md:p-8 bg-stone-50">
             <div class="container mx-auto py-12">
                 <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Frequently Asked Questions</h2>
                 <div class="max-w-3xl mx-auto space-y-6">
-                    <details class="bg-white p-6 rounded-lg shadow-md details-plus-minus">
+                    <details class="bg-white p-6 rounded-lg shadow-sm details-plus-minus">
                         <summary class="text-xl font-semibold text-gray-800 flex justify-between items-center">
                             How do I choose the right yarn for my project?
                         </summary>
                         <p class="mt-4 text-gray-700">The best yarn depends on your project! For wearable items, consider soft fibers like merino wool or cotton. For things that need to hold their shape, such as amigurumi, acrylic or worsted-weight cotton is a great choice.</p>
                     </details>
-                    <details class="bg-white p-6 rounded-lg shadow-lg details-plus-minus">
+                    <details class="bg-white p-6 rounded-lg shadow-sm details-plus-minus">
                         <summary class="text-xl font-semibold text-gray-800 flex justify-between items-center">
                             Do you offer patterns for beginners?
                         </summary>
                         <p class="mt-4 text-gray-700">Yes! Our tutorials section has a variety of patterns perfect for beginners, focusing on foundational stitches like single crochet and double crochet. We also have a beginner's crochet kit in our store.</p>
                     </details>
-                    <details class="bg-white p-6 rounded-lg shadow-lg details-plus-minus">
+                    <details class="bg-white p-6 rounded-lg shadow-sm details-plus-minus">
                         <summary class="text-xl font-semibold text-gray-800 flex justify-between items-center">
                             What is the best way to care for my finished crochet items?
                         </summary>
@@ -512,24 +675,24 @@
         </section>
 
         <!-- Testimonials Page -->
-        <section id="testimonials-page" class="page-section p-4 md:p-8">
+        <section id="testimonials-page" class="page-section p-4 md:p-8 bg-stone-50">
             <div class="container mx-auto py-12">
                 <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">What Our Customers Say</h2>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Testimonial 1 -->
-                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center">
+                    <div class="bg-white rounded-lg shadow-sm p-6 flex flex-col items-center text-center">
                         <img src="https://placehold.co/80x80/D4F2F2/black?text=JD" alt="Customer avatar" class="rounded-full w-20 h-20 object-cover mb-4">
                         <p class="italic text-lg text-gray-700 mb-4">"Cheryl's tutorials are so clear and easy to follow. I went from never touching a hook to finishing my first blanket in just a month!"</p>
                         <h4 class="font-bold text-amber-800">- Jane D.</h4>
                     </div>
                     <!-- Testimonial 2 -->
-                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center">
+                    <div class="bg-white rounded-lg shadow-sm p-6 flex flex-col items-center text-center">
                         <img src="https://placehold.co/80x80/F2E8D4/black?text=MK" alt="Customer avatar" class="rounded-full w-20 h-20 object-cover mb-4">
                         <p class="italic text-lg text-gray-700 mb-4">"The yarn quality is exceptional. It's so soft and a joy to work with. My projects have never looked better."</p>
                         <h4 class="font-bold text-amber-800">- Mark K.</h4>
                     </div>
                     <!-- Testimonial 3 -->
-                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center">
+                    <div class="bg-white rounded-lg shadow-sm p-6 flex flex-col items-center text-center">
                         <img src="https://placehold.co/80x80/E8F2D4/black?text=LC" alt="Customer avatar" class="rounded-full w-20 h-20 object-cover mb-4">
                         <p class="italic text-lg text-gray-700 mb-4">"I love the inspiration gallery! It always gives me new ideas and reminds me why I love this craft. The patterns are so creative."</p>
                         <h4 class="font-bold text-amber-800">- Linda C.</h4>
@@ -539,10 +702,10 @@
         </section>
 
         <!-- Contact Page -->
-        <section id="contact-page" class="page-section p-4 md:p-8">
+        <section id="contact-page" class="page-section p-4 md:p-8 bg-stone-50">
             <div class="container mx-auto py-12">
                 <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">Contact Us</h2>
-                <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8">
+                <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6 md:p-8">
                     <p class="text-center text-xl text-gray-700 mb-6">
                         We'd love to hear from you! Whether you have a question about a pattern, need help with an order, or just want to share your latest creation, feel free to reach out.
                     </p>
@@ -562,7 +725,7 @@
                                     <label for="contact-message" class="block text-gray-700 font-medium mb-1">Message</label>
                                     <textarea id="contact-message" rows="5" class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-amber-200 focus:outline-none" placeholder="Your message..." required></textarea>
                                 </div>
-                                <button type="submit" class="w-full bg-amber-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-700 transition-colors">
+                                <button type="submit" class="w-full bg-amber-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-800 transition-colors">
                                     Send Message
                                 </button>
                             </form>
@@ -571,19 +734,19 @@
                             <h3 class="text-2xl font-bold text-gray-800 mb-4">Our Details</h3>
                             <div class="space-y-4 text-gray-700">
                                 <div class="flex items-center">
-                                    <i class="fas fa-map-marker-alt text-amber-600 mr-4"></i>
-                                    <span>123 Yarn Street, Craftville, USA 12345</span>
+                                    <i class="fas fa-map-marker-alt text-amber-700 mr-4"></i>
+                                    <span>MURAMATI ROAD, JUJA, KIAMBU</span>
                                 </div>
                                 <div class="flex items-center">
-                                    <i class="fas fa-phone-alt text-amber-600 mr-4"></i>
-                                    <span>(123) 456-7890</span>
+                                    <i class="fas fa-phone-alt text-amber-700 mr-4"></i>
+                                    <span>0769012520</span>
                                 </div>
                                 <div class="flex items-center">
-                                    <i class="fas fa-envelope text-amber-600 mr-4"></i>
-                                    <span>info@cheryls-crochet.com</span>
+                                    <i class="fas fa-envelope text-amber-700 mr-4"></i>
+                                    <a href="mailto:info@cheryls-crochet.com" class="hover:text-amber-800">info@cheryls-crochet.com</a>
                                 </div>
                                 <div class="flex items-center">
-                                    <i class="fas fa-clock text-amber-600 mr-4"></i>
+                                    <i class="fas fa-clock text-amber-700 mr-4"></i>
                                     <span>Mon-Fri: 9am - 5pm</span>
                                 </div>
                             </div>
@@ -594,7 +757,7 @@
         </section>
 
         <!-- Checkout Modal -->
-        <div id="checkout-modal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-[100] items-center justify-center p-4">
+        <div id="checkout-modal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-60 z-[100] items-center justify-center p-4">
             <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-2xl w-full relative">
                 <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -612,7 +775,7 @@
         </div>
 
         <!-- Quick View Modal -->
-        <div id="quick-view-modal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-[100] items-center justify-center p-4">
+        <div id="quick-view-modal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-60 z-[100] items-center justify-center p-4">
             <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-4xl w-full relative mx-auto mt-20">
                 <button onclick="closeQuickView()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -623,6 +786,82 @@
             </div>
         </div>
 
+        <!-- Policy Modals -->
+        <!-- Privacy Policy Modal -->
+        <div id="privacy-policy-modal" class="policy-modal fixed top-0 left-0 w-full h-full bg-black bg-opacity-60 z-[100] items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-3xl w-full relative max-h-[90vh] overflow-y-auto">
+                <button onclick="closePolicyModal('privacy-policy-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+                <h3 class="text-3xl font-bold text-amber-800 mb-4 font-heading">Privacy Policy</h3>
+                <div class="space-y-4 text-gray-700">
+                    <p><strong>Last Updated: 9/25/2025</strong></p>
+                    <p>Cheryl's Crochet ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website.</p>
+                    <h4 class="text-xl font-semibold">Information We Collect</h4>
+                    <p>We may collect personal information such as your name, email address, and message content when you use our contact form. When you place an order, we collect information necessary to process that order, which may include your name, contact details, and order details.</p>
+                    <h4 class="text-xl font-semibold">How We Use Your Information</h4>
+                    <p>We use the information we collect to: respond to your inquiries, process your orders, improve our website and services, and send you marketing communications if you opt-in.</p>
+                    <h4 class="text-xl font-semibold">Sharing Your Information</h4>
+                    <p>We do not sell, trade, or otherwise transfer your personally identifiable information to outside parties. This does not include trusted third parties who assist us in operating our website or servicing you, so long as those parties agree to keep this information confidential.</p>
+                    <h4 class="text-xl font-semibold">Your Rights</h4>
+                    <p>You have the right to request access to the personal data we hold about you, to request corrections, and to request deletion of your data. Please contact us to make such a request.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cookie Policy Modal -->
+        <div id="cookie-policy-modal" class="policy-modal fixed top-0 left-0 w-full h-full bg-black bg-opacity-60 z-[100] items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-3xl w-full relative max-h-[90vh] overflow-y-auto">
+                <button onclick="closePolicyModal('cookie-policy-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+                <h3 class="text-3xl font-bold text-amber-800 mb-4 font-heading">Cookie Policy</h3>
+                <div class="space-y-4 text-gray-700">
+                    <p><strong>Last Updated: 9/25/2025</strong></p>
+                    <p>This website uses cookies to enhance your browsing experience. A cookie is a small text file stored on your device.</p>
+                    <h4 class="text-xl font-semibold">How We Use Cookies</h4>
+                    <ul class="list-disc list-inside">
+                        <li><strong>Essential Cookies:</strong> These are necessary for the website to function, such as keeping items in your shopping cart.</li>
+                        <li><strong>Performance Cookies:</strong> These help us understand how visitors interact with our website by collecting information anonymously.</li>
+                        <li><strong>Functionality Cookies:</strong> These are used to recognize you when you return to our website and remember your preferences.</li>
+                    </ul>
+                    <h4 class="text-xl font-semibold">Your Choices</h4>
+                    <p>Most web browsers allow some control of most cookies through the browser settings. You can set your browser to refuse all or some browser cookies, or to alert you when websites set or access cookies. If you disable or refuse cookies, please note that some parts of this website may become inaccessible or not function properly.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Terms of Service Modal -->
+        <div id="terms-of-service-modal" class="policy-modal fixed top-0 left-0 w-full h-full bg-black bg-opacity-60 z-[100] items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-3xl w-full relative max-h-[90vh] overflow-y-auto">
+                <button onclick="closePolicyModal('terms-of-service-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+                <h3 class="text-3xl font-bold text-amber-800 mb-4 font-heading">Terms of Service</h3>
+                <div class="space-y-4 text-gray-700">
+                    <p><strong>Last Updated: 9/25/2025</strong></p>
+                    <p>By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement.</p>
+                    <h4 class="text-xl font-semibold">Intellectual Property</h4>
+                    <p>The Site and its original content, features, and functionality (including but not limited to all information, text, patterns, and images) are owned by Cheryl's Crochet and are protected by international copyright and other intellectual property laws.</p>
+                    <h4 class="text-xl font-semibold">User Conduct</h4>
+                    <p>You agree not to use the website for any unlawful purpose or any purpose prohibited under this clause. You agree not to use the website in any way that could damage the website, services, or general business of Cheryl's Crochet.</p>
+                    <h4 class="text-xl font-semibold">Limitation of Liability</h4>
+                    <p>In no event shall Cheryl's Crochet, nor any of its officers, directors, and employees, be held liable for anything arising out of or in any way connected with your use of this website.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Image Modal -->
+        <div id="featured-image-modal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-[100] items-center justify-center p-4">
+            <button onclick="closeFeaturedImageModal()" class="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <div class="max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center" onclick="closeFeaturedImageModal()">
+                <img id="featured-modal-img" src="" alt="Featured Project Full Size" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+            </div>
+        </div>
+
+
     </main>
 
     <!-- Footer -->
@@ -631,7 +870,7 @@
             <!-- Footer Section 1: Logo & Description -->
             <div class="mb-6 md:mb-0">
                 <a href="#" class="text-3xl font-semibold text-amber-500 flex items-center mb-4 font-heading" onclick="showPage('home-page'); return false;">
-                    <img src="https://placehold.co/40x40/D2B48C/FFFFFF?text=Hook" alt="Cheryl's Crochet Logo" class="h-10 mr-2 rounded-full">
+                    <img src="images/Gemini_Generated_Image_vomy3bvomy3bvomy.png" alt="Cheryl's Crochet Logo" class="h-10 mr-2 rounded-full">
                     Cheryl's Crochet
                 </a>
                 <p class="text-sm">Bringing the joy of crochet to your hands with quality materials and endless inspiration.</p>
@@ -665,52 +904,83 @@
                 <p class="text-sm mb-2">Stay updated with our latest patterns!</p>
                 <form action="#" method="post" class="flex">
                     <input type="email" placeholder="Your email" class="w-full p-2 rounded-l-lg text-gray-800 focus:outline-none">
-                    <button type="submit" class="bg-amber-600 text-white p-2 rounded-r-lg hover:bg-amber-700 transition-colors">Sign Up</button>
+                    <button type="submit" class="bg-amber-700 text-white p-2 rounded-r-lg hover:bg-amber-800 transition-colors">Sign Up</button>
                 </form>
             </div>
 
             <!-- Footer Section 4: Contact -->
             <div>
                 <h4 class="text-xl font-semibold text-white mb-4">Contact</h4>
-                <p class="text-sm">123 Yarn Street, Craftville, USA 12345</p>
+                <p class="text-sm">MURAMATI ROAD, JUJA , KIAMBU</p>
                 <p class="text-sm">Email: <a href="mailto:info@cheryls-crochet.com" class="hover:text-white">info@cheryls-crochet.com</a></p>
-                <p class="text-sm">Phone: (123) 456-7890</p>
+                <p class="text-sm">Phone: 0769012520</p>
             </div>
         </div>
 
         <!-- Bottom Copyright Section -->
         <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500">
+            <div class="flex justify-center space-x-4 mb-4">
+                <a href="#" onclick="openPolicyModal('terms-of-service-modal'); return false;" class="hover:text-white">Terms of Service</a>
+                <span>&bull;</span>
+                <a href="#" onclick="openPolicyModal('privacy-policy-modal'); return false;" class="hover:text-white">Privacy Policy</a>
+                <span>&bull;</span>
+                <a href="#" onclick="openPolicyModal('cookie-policy-modal'); return false;" class="hover:text-white">Cookie Policy</a>
+            </div>
             <p>&copy; 2024 Cheryl's Crochet. All rights reserved.</p>
         </div>
     </footer>
 
     <!-- Back to Top Button -->
-    <button id="back-to-top-button" class="fixed bottom-8 right-8 bg-amber-600 text-white p-3 rounded-full shadow-lg hover:bg-amber-700 transition-opacity duration-300 opacity-0 invisible z-50">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-        </svg>
+    <button id="back-to-top-btn" class="hidden fixed bottom-8 right-8 bg-amber-700 text-white w-12 h-12 rounded-full shadow-lg items-center justify-center text-xl hover:bg-amber-800 transition-opacity duration-300 z-50">
+        <i class="fas fa-arrow-up"></i>
     </button>
 
     <script>
         // --- Core Application Logic ---
         const pageSections = document.querySelectorAll('.page-section');
         const navLinks = document.querySelectorAll('.nav-link');
+        const mobileMenuContainer = document.getElementById('mobile-menu-container');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenuCloseButton = document.getElementById('mobile-menu-close-button');
         const messageBox = document.getElementById('message-box');
         
+        let currentPage = 1;
+        const ITEMS_PER_PAGE = 8;
+
         // A simple, static cart and wishlist for demonstration
         const cartItems = [];
         const wishlistItems = [];
         const products = [
-            { id: 1, name: "Merino Wool Yarn", price: 1875.00, imageUrl: "https://placehold.co/400x400/D4A972/white?text=Wool+Yarn", isNew: true, description: "Luxuriously soft and warm, this 100% merino wool yarn is perfect for sweaters, scarves, and baby blankets. Available in a variety of rich colors." },
-            { id: 2, name: "Bamboo Crochet Hook Set", price: 3750.00, imageUrl: "https://placehold.co/400x400/C0C5B0/white?text=Hook+Set", isNew: false, description: "A complete set of lightweight and ergonomic bamboo crochet hooks. Sizes range from 2mm to 10mm, all stored in a beautiful fabric case." },
-            { id: 3, name: "Cotton Yarn Skein", price: 1300.00, imageUrl: "https://placehold.co/400x400/966F33/white?text=Cotton+Yarn", isNew: false, description: "Durable and breathable 100% cotton yarn. Ideal for dishcloths, market bags, and summer garments. Machine washable for easy care." },
-            { id: 4, name: "Stitch Markers (Pack of 20)", price: 750.00, imageUrl: "https://placehold.co/400x400/E5CC9E/white?text=Markers", isNew: true, description: "Never lose your place again! This pack of 20 locking stitch markers comes in assorted colors to help you keep track of your stitches and rows." },
-            { id: 5, name: "Beginner's Crochet Kit", price: 6750.00, imageUrl: "https://placehold.co/400x400/8B5E3C/white?text=Beginner+Kit", isNew: false, description: "Everything you need to start your crochet journey. This kit includes a set of hooks, several balls of yarn, stitch markers, a yarn needle, and a beginner's pattern book." },
-            { id: 6, name: "Acrylic Yarn Ball", price: 950.00, imageUrl: "https://placehold.co/400x400/A0522D/white?text=Acrylic+Yarn", isNew: false, description: "A versatile and affordable acrylic yarn that's great for a wide range of projects, from blankets to amigurumi. Hypoallergenic and easy to care for." },
-            { id: 7, name: "Yarn Needle Set", price: 525.00, imageUrl: "https://placehold.co/400x400/77502B/white?text=Needles", isNew: true, description: "A set of three blunt-tipped yarn needles in various sizes. Essential for weaving in ends and seaming your finished crochet projects." },
-            { id: 8, name: "Crochet Pattern Book", price: 2700.00, imageUrl: "https://placehold.co/400x400/F2E8D4/black?text=Pattern+Book", isNew: false, description: "A collection of 15 modern and stylish crochet patterns, from accessories to home decor. Includes detailed instructions and beautiful photography." }
+            { id: 1, name: "Merino Wool Yarn", price: 1875.00, imageUrl: "images/merino wool yan.webp", isNew: true, category: "Yarn & Tools", description: "Luxuriously soft and warm, this 100% merino wool yarn is perfect for sweaters, scarves, and baby blankets. Available in a variety of rich colors." },
+            { id: 2, name: "Bamboo Crochet Hook Set", price: 3750.00, imageUrl: "images/bamboo crotchet hook set.webp", isNew: false, category: "Yarn & Tools", description: "A complete set of lightweight and ergonomic bamboo crochet hooks. Sizes range from 2mm to 10mm, all stored in a beautiful fabric case." },
+            { id: 3, name: "Cotton Yarn Skein", price: 1300.00, imageUrl: "images/cotton yarn skein.jpg", isNew: false, category: "Yarn & Tools", description: "Durable and breathable 100% cotton yarn. Ideal for dishcloths, market bags, and summer garments. Machine washable for easy care." },
+            { id: 4, name: "Stitch Markers (Pack of 20)", price: 750.00, imageUrl: "images/stitch markers.jpg", isNew: true, category: "Yarn & Tools", description: "Never lose your place again! This pack of 20 locking stitch markers comes in assorted colors to help you keep track of your stitches and rows." },
+            { id: 5, name: "Beginner's Crochet Kit", price: 6750.00, imageUrl: "images/beginners crotchet kit.jpg", isNew: false, category: "Kits", description: "Everything you need to start your crochet journey. This kit includes a set of hooks, several balls of yarn, stitch markers, a yarn needle, and a beginner's pattern book." },
+            { id: 6, name: "Acrylic Yarn Ball", price: 950.00, imageUrl: "images/acrylic yarn ball.jpg", isNew: false, category: "Yarn & Tools", description: "A versatile and affordable acrylic yarn that's great for a wide range of projects, from blankets to amigurumi. Hypoallergenic and easy to care for." },
+            { id: 7, name: "Yarn Needle Set", price: 525.00, imageUrl: "images/yarn needle set.jpg", isNew: true, category: "Yarn & Tools", description: "A set of three blunt-tipped yarn needles in various sizes. Essential for weaving in ends and seaming your finished crochet projects." },
+            { id: 8, name: "Crochet Pattern Book", price: 2700.00, imageUrl: "images/crotchet patternbook.jpg", isNew: false, category: "Patterns", description: "A collection of 15 modern and stylish crochet patterns, from accessories to home decor. Includes detailed instructions and beautiful photography." },
+            { id: 9, name: "Winter Scarf", price: 2500.00, imageUrl: "images/winter scarf.jpeg", isNew: true, category: "Apparel", description: "A cozy and stylish handmade winter scarf to keep you warm during the cold season. Made with soft, chunky yarn." },
+            { id: 10, name: "Lace Shawl", price: 3200.00, imageUrl: "images/lace shawl.webp", isNew: false, category: "Apparel", description: "An elegant and intricate lace shawl, perfect for special occasions or as a light wrap. A beautiful and delicate accessory." },
+            { id: 11, name: "Fingerless Gloves", price: 1500.00, imageUrl: "images/fingerless glove.png", isNew: false, category: "Apparel", description: "Keep your hands warm while keeping your fingers free. These stylish fingerless gloves are perfect for cool days." },
+            { id: 12, name: "Soft Baby Blanket", price: 4500.00, imageUrl: "images/soft baby blanket.webp", isNew: true, category: "Home Goods", description: "A wonderfully soft and gentle baby blanket, handmade with hypoallergenic yarn. The perfect gift for a newborn." },
+            { id: 13, name: "Amigurumi Octopus", price: 1800.00, imageUrl: "images/octopus.webp", isNew: false, category: "Toys", description: "A cute and cuddly amigurumi octopus toy. Lovingly handmade and safe for children." },
+            { id: 14, name: "Tote Bag", price: 2800.00, imageUrl: "images/tote bag.heic", isNew: false, category: "Accessories", description: "A sturdy and fashionable crochet tote bag, perfect for carrying your essentials, from groceries to yarn." },
+            { id: 15, name: "Elegant Long Skirt", price: 3500.00, imageUrl: "images/loong skkirt.jpg", isNew: true, category: "Apparel", description: "A beautiful and flowing long crochet skirt, perfect for a touch of handmade elegance." },
+            { id: 16, name: "Breezy Long Summer Skirt", price: 3800.00, imageUrl: "images/long skirt.jpg", isNew: true, category: "Apparel", description: "Light and airy, this long summer skirt is perfect for warm days and beach outings." },
+            { id: 17, name: "Classic Halter Top", price: 2200.00, imageUrl: "images/halter top.webp", isNew: true, category: "Apparel", description: "A stylish and classic crochet halter top, a versatile addition to your summer wardrobe." },
+            { id: 18, name: "Chic Short Skirt", price: 2500.00, imageUrl: "images/skirrt.jpg", isNew: true, category: "Apparel", description: "A fun and flirty short crochet skirt, great for a casual day out or a festival look." },
+            { id: 19, name: "Stylish Split Jumper", price: 4200.00, imageUrl: "images/slipt jumper.jpg", isNew: true, category: "Apparel", description: "A modern and comfortable crochet split jumper, combining style and coziness." },
+            { id: 20, "name": "Light Summer Skirt", price: 2800.00, imageUrl: "images/summer skirt.jpg", isNew: true, category: "Apparel", description: "An essential piece for your summer collection, this light crochet skirt is both cute and comfortable." },
+            { id: 21, name: "Handmade Key Holder", price: 800.00, imageUrl: "images/key holder.jpg", isNew: true, category: "Accessories", description: "A charming and practical handmade key holder. A perfect small gift or accessory." },
+            { id: 22, name: "Backless Halter Top", price: 2400.00, imageUrl: "images/backless halter top.jpg", isNew: true, category: "Apparel", description: "A stunning backless halter top for a bold and beautiful summer statement." },
+            { id: 23, name: "Boho Summer Top", price: 2300.00, imageUrl: "images/summer top.jpg", isNew: true, category: "Apparel", description: "A light and breezy boho-style summer top, perfect for pairing with skirts or shorts." },
+            { id: 24, name: "Festival Halter Top", price: 2250.00, imageUrl: "images/halter top.png", isNew: true, category: "Apparel", description: "Another gorgeous take on the classic halter top, ready for any festival or sunny day." },
+            { id: 25, name: "Playful Short Skirt", price: 2600.00, imageUrl: "images/skirt.jpg", isNew: true, category: "Apparel", description: "A second style of our popular short skirt, featuring a unique stitch pattern." },
+            { id: 26, name: "Floral Key Holder", price: 850.00, imageUrl: "images/key chain.webp", isNew: true, category: "Accessories", description: "Keep your keys organized with this beautiful floral-themed crochet key holder." },
+            { id: 27, name: "Amigurumi Key Holder", price: 900.00, imageUrl: "images/key chain.jpg", isNew: true, category: "Accessories", description: "A cute amigurumi character key holder that adds a touch of fun to your keys." },
+            { id: 28, name: "Classic Sweater Vest", price: 2800.00, imageUrl: "images/checkboard sweater vest.jpg", isNew: true, category: "Apparel", description: "A timeless and stylish crochet sweater vest. Perfect for layering over a shirt for a chic, academic look." }
         ];
 
         /**
@@ -741,8 +1011,7 @@
             dropdowns.forEach(dropdown => dropdown.classList.remove('active'));
 
             // Close mobile menu if open
-            mobileMenu.classList.add('-translate-y-full');
-            
+            closeMobileMenu();
             // Re-render lists if navigating to their pages
             if (pageId === 'wishlist-page') {
                 renderWishlist();
@@ -786,10 +1055,31 @@
             });
         });
 
-        // Event listener for mobile menu toggle
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('-translate-y-full');
-        });
+        // --- Mobile Menu Logic ---
+        function openMobileMenu() {
+            mobileMenuContainer.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            // Use requestAnimationFrame to ensure the transition happens after the element is displayed
+            requestAnimationFrame(() => {
+                mobileMenuOverlay.classList.remove('opacity-0');
+                mobileMenu.classList.remove('-translate-x-full');
+            });
+        }
+
+        function closeMobileMenu() {
+            mobileMenuOverlay.classList.add('opacity-0');
+            mobileMenu.classList.add('-translate-x-full');
+            // Wait for the transition to finish before hiding the container
+            setTimeout(() => {
+                mobileMenuContainer.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300); // Should match the transition duration
+        }
+
+        // Event listeners for mobile menu
+        mobileMenuButton.addEventListener('click', openMobileMenu);
+        mobileMenuCloseButton.addEventListener('click', closeMobileMenu);
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
 
         // --- Search Bar Logic ---
         const searchBar = document.getElementById('search-bar');
@@ -809,6 +1099,10 @@
                 document.body.style.overflow = '';
                 searchInput.value = '';
                 searchResults.innerHTML = '';
+            }
+            // Close mobile menu if it's open
+            if (!mobileMenuContainer.classList.contains('hidden')) {
+                closeMobileMenu();
             }
         }
 
@@ -868,27 +1162,28 @@
          */
         function renderNewArrivals() {
             const newArrivalsList = document.getElementById('new-arrivals-list');
-            const newProducts = products.filter(p => p.isNew);
+            // Get the latest 8 new arrivals
+            const newProducts = products.filter(p => p.isNew).slice(-8).reverse();
             
             newArrivalsList.innerHTML = newProducts.map(product => {
                 return `
-                <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col relative">
-                    <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-48 object-cover">
-                    <div class="p-4 flex flex-col flex-grow">
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col relative group transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+                    <div class="relative">
+                        <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-48 object-cover cursor-pointer" onclick="openFeaturedImageModal('${product.imageUrl}')">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                            <button onclick="openQuickView(${product.id})" class="text-white bg-black bg-opacity-50 px-4 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">Quick View</button>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow h-full">
                         <div class="flex-grow">
                             <h3 class="text-xl font-semibold text-gray-800">${product.name}</h3>
-                            <p class="text-2xl font-bold text-amber-600 mt-2">Ksh ${product.price.toFixed(2)}</p>
+                            <p class="text-2xl font-bold text-amber-800 mt-2">Ksh ${product.price.toFixed(2)}</p>
                         </div>
-                        <button onclick="openQuickView(${product.id})" class="mt-4 w-full text-center bg-gray-100 text-gray-800 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 transition-colors">Quick View</button>
-                        <h3 class="text-xl font-semibold text-gray-800">${product.name}</h3>
-                        <p class="text-2xl font-bold text-amber-600 mt-2 flex-grow">Ksh ${product.price.toFixed(2)}</p>
                         <div class="flex items-center justify-between mt-4 space-x-2">
-                             <button onclick="addToWishlist(${product.id})" class="text-gray-500 hover:text-red-500 transition-colors p-2 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 017.5 3C9.35 3 11 4.13 12 5.6C13 4.13 14.65 3 16.5 3A5.4 5.4 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                                </svg>
+                             <button onclick="addToWishlist(${product.id})" class="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full" title="Add to Wishlist">
+                                <i class="fas fa-heart text-xl"></i>
                             </button>
-                            <button onclick="addToCart(${product.id})" class="bg-amber-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-600 transition-colors flex-grow">
+                            <button onclick="addToCart(${product.id})" class="bg-amber-700 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-800 transition-colors flex-grow">
                                 Add to Cart
                             </button>
                         </div>
@@ -896,43 +1191,140 @@
                 </div>
                 `;
             }).join('');
+
+            setupNewArrivalsCarousel();
+        }
+
+        /**
+         * Sets up the logic for the new arrivals carousel.
+         */
+        function setupNewArrivalsCarousel() {
+            const list = document.getElementById('new-arrivals-list');
+            const prevBtn = document.getElementById('new-arrivals-prev');
+            const nextBtn = document.getElementById('new-arrivals-next');
+            let currentIndex = 0;
+
+            const getVisibleItemsCount = () => {
+                if (window.innerWidth >= 1024) return 4; // lg
+                if (window.innerWidth >= 768) return 3;  // md
+                if (window.innerWidth >= 640) return 2;  // sm
+                return 1; // mobile
+            };
+
+            const updateTotalSlides = () => {
+                const totalItems = list.children.length;
+                const visibleItems = getVisibleItemsCount();
+                return Math.max(0, totalItems - visibleItems);
+            };
+
+            const updateCarousel = () => {
+                const itemWidth = list.children[0].offsetWidth;
+                const gap = parseInt(window.getComputedStyle(list).gap);
+                const totalWidth = itemWidth + gap;
+                list.style.transform = `translateX(-${currentIndex * totalWidth}px)`;
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex >= updateTotalSlides();
+            };
+
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateCarousel();
+                }
+            });
+
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < updateTotalSlides()) {
+                    currentIndex++;
+                    updateCarousel();
+                }
+            });
+
+            // Initial setup and responsive handling
+            window.addEventListener('resize', () => {
+                // Reset index and update on resize to avoid issues
+                currentIndex = 0;
+                updateCarousel();
+            });
+            updateCarousel(); // Initial call
         }
         /**
-         * Renders the product list on the store page.
+         * Renders the category filter buttons.
          */
-        function renderProducts() {
+        function renderCategoryFilters() {
+            const categories = ['All', ...new Set(products.map(p => p.category))];
+            const filterContainer = document.getElementById('category-filters');
+            filterContainer.innerHTML = categories.map(category => `
+                <button 
+                    class="category-filter-btn px-4 py-2 rounded-full font-semibold border-2 border-amber-700 text-amber-800 hover:bg-amber-700 hover:text-white transition-colors"
+                    data-category="${category}"
+                >
+                    ${category}
+                </button>
+            `).join('');
+
+            // Add event listeners to the new buttons
+            document.querySelectorAll('.category-filter-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    // Update active state for buttons
+                    document.querySelectorAll('.category-filter-btn').forEach(btn => btn.classList.remove('bg-amber-700', 'text-white'));
+                    button.classList.add('bg-amber-700', 'text-white');
+
+                    // Filter products
+                    currentPage = 1; // Reset to first page on category change
+                    renderProducts(button.dataset.category);
+                });
+            });
+
+            // Set 'All' as active by default
+            const allButton = document.querySelector('.category-filter-btn[data-category="All"]');
+            if (allButton) allButton.classList.add('bg-amber-700', 'text-white');
+        }
+
+        /**
+         * Renders the product list on the store page.
+         * @param {string} [category='All'] - The category to filter by.
+         */
+        function renderProducts(category = 'All') {
+            const productSearchInput = document.getElementById('product-search-input');
+            const searchQuery = productSearchInput.value.toLowerCase();
             const sortValue = document.getElementById('sort-filter').value;
-            let sortedProducts = [...products]; // Create a copy to sort
+
+            // 1. Filter by search query and category
+            let filteredProducts = products.filter(product => 
+                (category === 'All' || product.category === category) &&
+                (product.name.toLowerCase().includes(searchQuery) || product.description.toLowerCase().includes(searchQuery))
+            );
+
+            // 2. Sort the filtered products
+            let sortedProducts = [...filteredProducts]; // Create a copy to sort
 
             if (sortValue === 'price-asc') {
                 sortedProducts.sort((a, b) => a.price - b.price);
             } else if (sortValue === 'price-desc') {
                 sortedProducts.sort((a, b) => b.price - a.price);
             }
-            // 'default' case doesn't require sorting, it will use the original order.
-            // If you wanted a specific default sort, like by ID, you could add:
-            // else { sortedProducts.sort((a, b) => a.id - b.id); }
 
-
-            const productList = document.getElementById('product-list');
-            
-            productList.innerHTML = sortedProducts.map(product => {
+            // This function now just generates the HTML for a given list of products
+            const generateProductHtml = (productsToRender) => productsToRender.map(product => {
                 return `
-                <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col relative">
-                    <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-48 object-cover">
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col relative group transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
+                    <div class="relative">
+                        <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-48 object-cover cursor-pointer" onclick="openFeaturedImageModal('${product.imageUrl}')">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                            <button onclick="openQuickView(${product.id})" class="text-white bg-black bg-opacity-50 px-4 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">Quick View</button>
+                        </div>
+                    </div>
                     <div class="p-4 flex flex-col flex-grow">
                         <div class="flex-grow">
                             <h3 class="text-xl font-semibold text-gray-800">${product.name}</h3>
-                            <p class="text-2xl font-bold text-amber-600 mt-2">Ksh ${product.price.toFixed(2)}</p>
+                            <p class="text-2xl font-bold text-amber-800 mt-2">Ksh ${product.price.toFixed(2)}</p>
                         </div>
-                        <button onclick="openQuickView(${product.id})" class="mt-4 w-full text-center bg-gray-100 text-gray-800 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 transition-colors">Quick View</button>
-                        <div class="flex items-center justify-between mt-6 space-x-2">
-                             <button onclick="addToWishlist(${product.id})" class="text-gray-500 hover:text-red-500 transition-colors p-2 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 017.5 3C9.35 3 11 4.13 12 5.6C13 4.13 14.65 3 16.5 3A5.4 5.4 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                                </svg>
+                        <div class="flex items-center justify-between mt-4 space-x-2">
+                             <button onclick="addToWishlist(${product.id})" class="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full" title="Add to Wishlist">
+                                <i class="fas fa-heart text-xl"></i>
                             </button>
-                            <button onclick="addToCart(${product.id})" class="bg-amber-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-600 transition-colors flex-grow">
+                            <button onclick="addToCart(${product.id})" class="bg-amber-700 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-800 transition-colors flex-grow">
                                 Add to Cart
                             </button>
                         </div>
@@ -940,6 +1332,68 @@
                 </div>
                 `;
             }).join('');
+
+            const productList = document.getElementById('product-list');
+            const productsHeading = document.getElementById('all-products-heading');
+            productsHeading.textContent = category === 'All' ? 'All Products' : category;
+
+            if (sortedProducts.length === 0) {
+                productList.innerHTML = `<p class="text-center text-gray-600 col-span-full">No products found matching your search.</p>`;
+                renderPaginationControls(0, 0); // Clear pagination
+                return;
+            }
+
+            // 3. Paginate the results
+            const totalPages = Math.ceil(sortedProducts.length / ITEMS_PER_PAGE);
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const paginatedProducts = sortedProducts.slice(startIndex, endIndex);
+
+            // 4. Render the current page of products and pagination controls
+            productList.innerHTML = generateProductHtml(paginatedProducts);
+            renderPaginationControls(totalPages, sortedProducts.length);
+        }
+
+        /**
+         * Renders the pagination controls below the product list.
+         * @param {number} totalPages - The total number of pages.
+         * @param {number} totalItems - The total number of items being paginated.
+         */
+        function renderPaginationControls(totalPages, totalItems) {
+            const paginationContainer = document.getElementById('pagination-controls');
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = ''; // No controls needed for 1 or 0 pages
+                return;
+            }
+
+            let buttonsHtml = '';
+            // Previous Button
+            buttonsHtml += `<button onclick="changePage(${currentPage - 1})" class="px-4 py-2 rounded-lg border ${currentPage === 1 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-white hover:bg-amber-100'}" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>`;
+
+            // Page Number Buttons
+            for (let i = 1; i <= totalPages; i++) {
+                buttonsHtml += `<button onclick="changePage(${i})" class="px-4 py-2 rounded-lg border ${currentPage === i ? 'bg-amber-700 text-white border-amber-700' : 'bg-white hover:bg-amber-100'}">${i}</button>`;
+            }
+
+            // Next Button
+            buttonsHtml += `<button onclick="changePage(${currentPage + 1})" class="px-4 py-2 rounded-lg border ${currentPage === totalPages ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-white hover:bg-amber-100'}" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+
+            paginationContainer.innerHTML = buttonsHtml;
+        }
+
+        /**
+         * Changes the current page and re-renders the product list.
+         * @param {number} newPage - The new page number to display.
+         */
+        function changePage(newPage) {
+            currentPage = newPage;
+            // Get the currently active category to re-render with the correct filter
+            const activeCategoryButton = document.querySelector('.category-filter-btn.bg-amber-700.text-white');
+            const currentCategory = activeCategoryButton ? activeCategoryButton.dataset.category : 'All';
+            renderProducts(currentCategory);
+            // Scroll to the top of the product list
+            const productListTop = document.getElementById('all-products-heading').offsetTop;
+            window.scrollTo({ top: productListTop - 80, behavior: 'smooth' }); // Adjust for header height
         }
         
         /**
@@ -1048,7 +1502,7 @@
                     </div>
                     <div class="flex items-center space-x-4">
                         <span class="text-xl font-bold text-gray-800">x${item.quantity}</span>
-                        <p class="text-xl font-bold text-amber-600">Ksh ${(item.price * item.quantity).toFixed(2)}</p>
+                        <p class="text-xl font-bold text-amber-800">Ksh ${(item.price * item.quantity).toFixed(2)}</p>
                         <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.013 21H7.987a2 2 0 01-1.92-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -1077,18 +1531,16 @@
             }
             
             const wishlistHtml = wishlistItems.map(item => `
-                 <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col relative">
+                 <div class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col relative">
                     <img src="${item.imageUrl}" alt="${item.name}" class="w-full h-48 object-cover">
                     <div class="p-4 flex flex-col flex-grow">
-                        <h3 class="text-xl font-semibold text-gray-800">${item.name}</h3>
-                        <p class="text-2xl font-bold text-amber-600 mt-2 flex-grow">Ksh ${item.price.toFixed(2)}</p>
+                        <h3 class="text-xl font-semibold text-gray-800 flex-grow">${item.name}</h3>
+                        <p class="text-2xl font-bold text-amber-800 mt-2">Ksh ${item.price.toFixed(2)}</p>
                         <div class="flex items-center justify-between mt-4 space-x-2">
-                             <button onclick="removeFromWishlist(${item.id})" class="text-gray-500 hover:text-red-500 transition-colors p-2 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 017.5 3C9.35 3 11 4.13 12 5.6C13 4.13 14.65 3 16.5 3A5.4 5.4 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                                </svg>
+                             <button onclick="removeFromWishlist(${item.id})" class="text-red-500 hover:text-red-600 transition-colors p-2 rounded-full" title="Remove from Wishlist">
+                                <i class="fas fa-trash-alt text-xl"></i>
                             </button>
-                            <button onclick="addToCart(${item.id}); showPage('cart-page');" class="bg-amber-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-600 transition-colors flex-grow">
+                            <button onclick="addToCart(${item.id}); showPage('cart-page');" class="bg-amber-700 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-800 transition-colors flex-grow">
                                 Add to Cart
                             </button>
                         </div>
@@ -1146,15 +1598,15 @@
 
             checkoutSummaryContainer.innerHTML += `
                 <div class="flex justify-between items-center pt-4 mt-4 border-t">
-                    <span class="text-lg font-bold text-amber-600">Total (incl. tax)</span>
-                    <span class="text-lg font-bold text-amber-600">Ksh ${total.toFixed(2)}</span>
+                    <span class="text-lg font-bold text-amber-800">Total (incl. tax)</span>
+                    <span class="text-lg font-bold text-amber-800">Ksh ${total.toFixed(2)}</span>
                 </div>
             `;
 
             orderText += `\nTotal: Ksh ${total.toFixed(2)}\n\nThank you!`;
 
             // Update WhatsApp and Email links
-            const businessPhoneNumber = "11234567890"; // Replace with your actual number, e.g., for US: 1 followed by area code and number
+            const businessPhoneNumber = "254769012520"; // Kenyan country code + number without leading 0
             const businessEmail = "info@cheryls-crochet.com";
             document.getElementById('whatsapp-link').href = `https://wa.me/${businessPhoneNumber}?text=${encodeURIComponent(orderText)}`;
             document.getElementById('email-link').href = `mailto:${businessEmail}?subject=New Order from Cheryl's Crochet&body=${encodeURIComponent(orderText)}`;
@@ -1189,15 +1641,13 @@
                 </div>
                 <div class="flex flex-col">
                     <h3 class="text-4xl font-bold text-amber-800 font-heading">${product.name}</h3>
-                    <p class="text-3xl font-bold text-amber-600 my-4">Ksh ${product.price.toFixed(2)}</p>
+                    <p class="text-3xl font-bold text-amber-800 my-4">Ksh ${product.price.toFixed(2)}</p>
                     <p class="text-gray-700 text-lg mb-6 flex-grow">${product.description}</p>
                     <div class="flex items-center justify-between mt-4 space-x-4">
-                        <button onclick="addToWishlist(${product.id})" class="text-gray-500 hover:text-red-500 transition-colors p-3 rounded-full border">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.4 5.4 0 017.5 3C9.35 3 11 4.13 12 5.6C13 4.13 14.65 3 16.5 3A5.4 5.4 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                            </svg>
+                        <button onclick="addToWishlist(${product.id})" class="text-gray-400 hover:text-red-500 transition-colors p-3 rounded-full border" title="Add to Wishlist">
+                            <i class="fas fa-heart text-xl"></i>
                         </button>
-                        <button onclick="addToCart(${product.id}); closeQuickView();" class="bg-amber-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-600 transition-colors flex-grow">
+                        <button onclick="addToCart(${product.id}); closeQuickView();" class="bg-amber-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-800 transition-colors flex-grow">
                             Add to Cart
                         </button>
                     </div>
@@ -1224,6 +1674,56 @@
             }
         });
 
+        // --- Featured Image Modal Logic ---
+        const featuredImageModal = document.getElementById('featured-image-modal');
+        const featuredModalImg = document.getElementById('featured-modal-img');
+
+        /**
+         * Opens the featured image modal with a specific image.
+         * @param {string} imageUrl - The URL of the image to display.
+         */
+        function openFeaturedImageModal(imageUrl) {
+            if (featuredImageModal && featuredModalImg) {
+                featuredModalImg.src = imageUrl;
+                featuredImageModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        /**
+         * Closes the featured image modal.
+         */
+        function closeFeaturedImageModal() {
+            if (featuredImageModal) {
+                featuredImageModal.classList.remove('active');
+                featuredModalImg.src = ""; // Clear src to prevent flash of old image
+                document.body.style.overflow = '';
+            }
+        }
+
+        /**
+         * Opens a policy modal.
+         * @param {string} modalId - The ID of the modal to open.
+         */
+        function openPolicyModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        /**
+         * Closes a policy modal.
+         * @param {string} modalId - The ID of the modal to close.
+         */
+        function closePolicyModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
 
         // --- Contact Form Logic ---
         const contactForm = document.getElementById('contact-form');
@@ -1242,19 +1742,19 @@
         });
         
         // --- Back to Top Button Logic ---
-        const backToTopButton = document.getElementById('back-to-top-button');
+        const backToTopBtn = document.getElementById('back-to-top-btn');
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) { // Show button after scrolling 300px
-                backToTopButton.classList.remove('opacity-0', 'invisible');
-                backToTopButton.classList.add('opacity-100', 'visible');
+                backToTopBtn.classList.remove('hidden');
+                backToTopBtn.classList.add('flex');
             } else {
-                backToTopButton.classList.remove('opacity-100', 'visible');
-                backToTopButton.classList.add('opacity-0', 'invisible');
+                backToTopBtn.classList.add('hidden');
+                backToTopBtn.classList.remove('flex');
             }
         });
 
-        backToTopButton.addEventListener('click', () => {
+        backToTopBtn.addEventListener('click', () => {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
@@ -1275,20 +1775,37 @@
         window.removeFromWishlist = removeFromWishlist;
         window.openQuickView = openQuickView;
         window.closeQuickView = closeQuickView;
+        window.openFeaturedImageModal = openFeaturedImageModal;
+        window.closeFeaturedImageModal = closeFeaturedImageModal;
+        window.openPolicyModal = openPolicyModal;
+        window.closePolicyModal = closePolicyModal;
+        window.changePage = changePage;
         
         // Initial setup on page load
         window.onload = () => {
             renderProducts();
+            renderCategoryFilters();
             renderNewArrivals();
             renderCart();
             renderWishlist();
             updateWishlistCount();
             showPage('home-page');
             document.querySelector('.nav-link[data-page="home-page"]').classList.add('active');
+            
 
             // Add event listener for the sort filter
             const sortFilter = document.getElementById('sort-filter');
-            sortFilter.addEventListener('change', renderProducts);
+            sortFilter.addEventListener('change', () => {
+                currentPage = 1; // Reset to first page on sort change
+                renderProducts(document.querySelector('.category-filter-btn.bg-amber-700')?.dataset.category || 'All');
+            });
+
+            // Add event listener for the product search input
+            const productSearchInput = document.getElementById('product-search-input');
+            productSearchInput.addEventListener('input', () => {
+                currentPage = 1; // Reset to first page on search
+                renderProducts(document.querySelector('.category-filter-btn.bg-amber-700')?.dataset.category || 'All');
+            });
         };
 
     </script>
