@@ -95,6 +95,13 @@
         #featured-image-modal.active {
             display: flex; /* Show when active */
         }
+        /* Auth Modal Styles */
+        #auth-modal {
+            display: none; /* Hidden by default */
+        }
+        #auth-modal.active {
+            display: flex; /* Show when active */
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -129,6 +136,7 @@
                         <a href="#" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-page="testimonials-page">Testimonials</a>
                         <a href="#" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-page="contact-page">Contact</a>
                         <a href="#" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-page="order-history-page">Order History</a>
+                        <a href="#" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-page="my-account-page">My Account</a>
                     </div>
                 </div>
 
@@ -137,6 +145,9 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
+                </button>
+                <button onclick="openAuthModal()" class="text-gray-600 hover:text-amber-700 transition-colors" title="Login/Register">
+                    <i class="fas fa-user-circle fa-lg"></i>
                 </button>
                 <a href="#" class="nav-link relative flex items-center text-gray-600 hover:text-amber-700 transition-colors" data-page="wishlist-page">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
@@ -191,6 +202,7 @@
                             <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="testimonials-page">Testimonials</a>
                             <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="contact-page">Contact</a>
                             <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="order-history-page">Order History</a>
+                            <a href="#" class="nav-link block text-gray-700 hover:text-amber-600" data-page="my-account-page">My Account</a>
                         </div>
                     </svg>
                     </div>
@@ -209,6 +221,10 @@
                         <span>Cart</span>
                         <span id="mobile-cart-count" class="ml-auto bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
                     </a>
+                    <button onclick="openAuthModal()" class="flex items-center text-gray-600 hover:text-amber-700 text-lg" title="Login/Register">
+                        <i class="fas fa-user-circle fa-lg mr-2"></i>
+                        <span>Login / Register</span>
+                    </button>
                 </nav>
             </div>
         </div>
@@ -282,6 +298,28 @@
                      </div>
                 </div>
             </div>
+
+            <!-- Best Sellers Section -->
+            <div class="bg-white py-12">
+                <div class="container mx-auto p-4 md:p-8">
+                    <h2 class="text-4xl font-bold text-center text-amber-800 mb-8 font-heading">Our Best Sellers</h2>
+                    <div id="best-sellers-list" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <!-- Best seller products will be generated here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recently Viewed Section -->
+            <div id="recently-viewed-section" class="bg-stone-50 py-12 hidden">
+                <div class="container mx-auto p-4 md:p-8">
+                    <h2 class="text-4xl font-bold text-center text-amber-800 mb-8 font-heading">Recently Viewed</h2>
+                    <div id="recently-viewed-list" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <!-- Recently viewed products will be generated here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+
         </section>
 
         <!-- About Page -->
@@ -713,6 +751,47 @@
             </div>
         </section>
 
+        <!-- My Account Page -->
+        <section id="my-account-page" class="page-section p-4 md:p-8 bg-stone-50">
+            <div class="container mx-auto py-12">
+                <h2 class="text-5xl font-bold text-center text-amber-800 mb-8 font-heading">My Account</h2>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Left Sidebar for Navigation -->
+                    <div class="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4 font-heading">Navigation</h3>
+                        <nav class="flex flex-col space-y-3">
+                            <a href="#" onclick="showPage('order-history-page'); return false;" class="text-gray-700 hover:text-amber-700 font-semibold flex items-center"><i class="fas fa-receipt fa-fw mr-3"></i>Order History</a>
+                            <a href="#" onclick="showPage('wishlist-page'); return false;" class="text-gray-700 hover:text-amber-700 font-semibold flex items-center"><i class="fas fa-heart fa-fw mr-3"></i>My Wishlist</a>
+                            <a href="#" onclick="logout()" class="text-red-600 hover:text-red-800 font-semibold flex items-center"><i class="fas fa-sign-out-alt fa-fw mr-3"></i>Logout</a>
+                        </nav>
+                    </div>
+
+                    <!-- Right Content Area -->
+                    <div class="md:col-span-2 bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 font-heading">Account Details</h3>
+                        <form id="account-details-form" class="space-y-4">
+                            <div>
+                                <label for="account-name" class="block text-gray-700 font-medium mb-1">Name</label>
+                                <input type="text" id="account-name" class="w-full px-4 py-2 border rounded-lg bg-gray-100 focus:bg-white focus:ring focus:ring-amber-200 focus:outline-none" value="Cheryl Maina" required>
+                            </div>
+                            <div>
+                                <label for="account-email" class="block text-gray-700 font-medium mb-1">Email</label>
+                                <input type="email" id="account-email" class="w-full px-4 py-2 border rounded-lg bg-gray-100 focus:bg-white focus:ring focus:ring-amber-200 focus:outline-none" value="cheryl@example.com" required>
+                            </div>
+                            <div>
+                                <label for="account-password" class="block text-gray-700 font-medium mb-1">New Password (optional)</label>
+                                <input type="password" id="account-password" class="w-full px-4 py-2 border rounded-lg bg-gray-100 focus:bg-white focus:ring focus:ring-amber-200 focus:outline-none" placeholder="Leave blank to keep current password">
+                            </div>
+                            <button type="submit" class="w-full bg-amber-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-800 transition-colors">
+                                Update Details
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
 
         <!-- Contact Page -->
         <section id="contact-page" class="page-section p-4 md:p-8 bg-stone-50">
@@ -783,6 +862,57 @@
                 <div class="flex flex-col md:flex-row gap-4">
                     <a id="whatsapp-link" href="#" onclick="finalizeOrder(event)" target="_blank" class="flex-1 text-center bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-2"><i class="fab fa-whatsapp"></i> Send via WhatsApp</a>
                     <a id="email-link" href="#" onclick="finalizeOrder(event)" class="flex-1 text-center bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"><i class="fas fa-envelope"></i> Send via Email</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auth Modal (Login/Register) -->
+        <div id="auth-modal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-60 z-[100] items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-md w-full relative">
+                <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+
+                <!-- Login Form -->
+                <div id="login-form-container">
+                    <h3 class="text-3xl font-bold text-amber-800 mb-6 font-heading text-center">Login</h3>
+                    <form id="login-form" class="space-y-4">
+                        <div>
+                            <label for="login-email" class="block text-gray-700 font-medium mb-1">Email</label>
+                            <input type="email" id="login-email" class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-amber-200 focus:outline-none" placeholder="you@example.com" required>
+                        </div>
+                        <div>
+                            <label for="login-password" class="block text-gray-700 font-medium mb-1">Password</label>
+                            <input type="password" id="login-password" class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-amber-200 focus:outline-none" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="w-full bg-amber-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-800 transition-colors">Login</button>
+                    </form>
+                    <p class="text-center text-gray-600 mt-4">
+                        Don't have an account? <a href="#" onclick="switchAuthView('register'); return false;" class="text-amber-700 font-semibold hover:underline">Sign up</a>
+                    </p>
+                </div>
+
+                <!-- Register Form (hidden by default) -->
+                <div id="register-form-container" style="display: none;">
+                    <h3 class="text-3xl font-bold text-amber-800 mb-6 font-heading text-center">Create Account</h3>
+                    <form id="register-form" class="space-y-4">
+                        <div>
+                            <label for="register-name" class="block text-gray-700 font-medium mb-1">Name</label>
+                            <input type="text" id="register-name" class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-amber-200 focus:outline-none" placeholder="Your Name" required>
+                        </div>
+                        <div>
+                            <label for="register-email" class="block text-gray-700 font-medium mb-1">Email</label>
+                            <input type="email" id="register-email" class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-amber-200 focus:outline-none" placeholder="you@example.com" required>
+                        </div>
+                        <div>
+                            <label for="register-password" class="block text-gray-700 font-medium mb-1">Password</label>
+                            <input type="password" id="register-password" class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-amber-200 focus:outline-none" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="w-full bg-amber-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-800 transition-colors">Create Account</button>
+                    </form>
+                    <p class="text-center text-gray-600 mt-4">
+                        Already have an account? <a href="#" onclick="switchAuthView('login'); return false;" class="text-amber-700 font-semibold hover:underline">Login</a>
+                    </p>
                 </div>
             </div>
         </div>
@@ -966,24 +1096,25 @@
         const cartItems = [];
         const wishlistItems = [];
         let orderHistory = [];
+        let recentlyViewedIds = [];
         const products = [
             { id: 1, name: "Merino Wool Yarn", price: 1875.00, imageUrl: "images/merino wool yan.webp", isNew: true, category: "Yarn & Tools", description: "Luxuriously soft and warm, this 100% merino wool yarn is perfect for sweaters, scarves, and baby blankets. Available in a variety of rich colors." },
             { id: 2, name: "Bamboo Crochet Hook Set", price: 3750.00, imageUrl: "images/bamboo crotchet hook set.webp", isNew: false, category: "Yarn & Tools", description: "A complete set of lightweight and ergonomic bamboo crochet hooks. Sizes range from 2mm to 10mm, all stored in a beautiful fabric case." },
             { id: 3, name: "Cotton Yarn Skein", price: 1300.00, imageUrl: "images/cotton yarn skein.jpg", isNew: false, category: "Yarn & Tools", description: "Durable and breathable 100% cotton yarn. Ideal for dishcloths, market bags, and summer garments. Machine washable for easy care." },
             { id: 4, name: "Stitch Markers (Pack of 20)", price: 750.00, imageUrl: "images/stitch markers.jpg", isNew: true, category: "Yarn & Tools", description: "Never lose your place again! This pack of 20 locking stitch markers comes in assorted colors to help you keep track of your stitches and rows." },
-            { id: 5, name: "Beginner's Crochet Kit", price: 6750.00, imageUrl: "images/beginners crotchet kit.jpg", isNew: false, category: "Kits", description: "Everything you need to start your crochet journey. This kit includes a set of hooks, several balls of yarn, stitch markers, a yarn needle, and a beginner's pattern book." },
+            { id: 5, name: "Beginner's Crochet Kit", price: 6750.00, imageUrl: "images/beginners crotchet kit.jpg", isNew: false, category: "Kits", description: "Everything you need to start your crochet journey. This kit includes a set of hooks, several balls of yarn, stitch markers, a yarn needle, and a beginner's pattern book.", isBestSeller: true },
             { id: 6, name: "Acrylic Yarn Ball", price: 950.00, imageUrl: "images/acrylic yarn ball.jpg", isNew: false, category: "Yarn & Tools", description: "A versatile and affordable acrylic yarn that's great for a wide range of projects, from blankets to amigurumi. Hypoallergenic and easy to care for." },
             { id: 7, name: "Yarn Needle Set", price: 525.00, imageUrl: "images/yarn needle set.jpg", isNew: true, category: "Yarn & Tools", description: "A set of three blunt-tipped yarn needles in various sizes. Essential for weaving in ends and seaming your finished crochet projects." },
             { id: 8, name: "Crochet Pattern Book", price: 2700.00, imageUrl: "images/crotchet patternbook.jpg", isNew: false, category: "Patterns", description: "A collection of 15 modern and stylish crochet patterns, from accessories to home decor. Includes detailed instructions and beautiful photography." },
             { id: 9, name: "Winter Scarf", price: 2500.00, imageUrl: "images/winter scarf.jpeg", isNew: true, category: "Apparel", description: "A cozy and stylish handmade winter scarf to keep you warm during the cold season. Made with soft, chunky yarn." },
             { id: 10, name: "Lace Shawl", price: 3200.00, imageUrl: "images/lace shawl.webp", isNew: false, category: "Apparel", description: "An elegant and intricate lace shawl, perfect for special occasions or as a light wrap. A beautiful and delicate accessory." },
             { id: 11, name: "Fingerless Gloves", price: 1500.00, imageUrl: "images/fingerless glove.png", isNew: false, category: "Apparel", description: "Keep your hands warm while keeping your fingers free. These stylish fingerless gloves are perfect for cool days." },
-            { id: 12, name: "Soft Baby Blanket", price: 4500.00, imageUrl: "images/soft baby blanket.webp", isNew: true, category: "Home Goods", description: "A wonderfully soft and gentle baby blanket, handmade with hypoallergenic yarn. The perfect gift for a newborn." },
+            { id: 12, name: "Soft Baby Blanket", price: 4500.00, imageUrl: "images/soft baby blanket.webp", isNew: true, category: "Home Goods", description: "A wonderfully soft and gentle baby blanket, handmade with hypoallergenic yarn. The perfect gift for a newborn.", isBestSeller: true },
             { id: 13, name: "Amigurumi Octopus", price: 1800.00, imageUrl: "images/octopus.webp", isNew: false, category: "Toys", description: "A cute and cuddly amigurumi octopus toy. Lovingly handmade and safe for children." },
             { id: 14, name: "Tote Bag", price: 2800.00, imageUrl: "images/tote bag.heic", isNew: false, category: "Accessories", description: "A sturdy and fashionable crochet tote bag, perfect for carrying your essentials, from groceries to yarn." },
             { id: 15, name: "Elegant Long Skirt", price: 3500.00, imageUrl: "images/loong skkirt.jpg", isNew: true, category: "Apparel", description: "A beautiful and flowing long crochet skirt, perfect for a touch of handmade elegance." },
             { id: 16, name: "Breezy Long Summer Skirt", price: 3800.00, imageUrl: "images/long skirt.jpg", isNew: true, category: "Apparel", description: "Light and airy, this long summer skirt is perfect for warm days and beach outings." },
-            { id: 17, name: "Classic Halter Top", price: 2200.00, imageUrl: "images/halter top.webp", isNew: true, category: "Apparel", description: "A stylish and classic crochet halter top, a versatile addition to your summer wardrobe." },
+            { id: 17, name: "Classic Halter Top", price: 2200.00, imageUrl: "images/halter top.webp", isNew: true, category: "Apparel", description: "A stylish and classic crochet halter top, a versatile addition to your summer wardrobe.", isBestSeller: true },
             { id: 18, name: "Chic Short Skirt", price: 2500.00, imageUrl: "images/skirrt.jpg", isNew: true, category: "Apparel", description: "A fun and flirty short crochet skirt, great for a casual day out or a festival look." },
             { id: 19, name: "Stylish Split Jumper", price: 4200.00, imageUrl: "images/slipt jumper.jpg", isNew: true, category: "Apparel", description: "A modern and comfortable crochet split jumper, combining style and coziness." },
             { id: 20, "name": "Light Summer Skirt", price: 2800.00, imageUrl: "images/summer skirt.jpg", isNew: true, category: "Apparel", description: "An essential piece for your summer collection, this light crochet skirt is both cute and comfortable." },
@@ -1006,7 +1137,20 @@
             { id: 37, name: "Cozy Cardigan", price: 4800.00, imageUrl: "images/cardigan.jpg", isNew: true, category: "Apparel", description: "A warm and stylish handmade crochet cardigan. The perfect layering piece for any season, made with soft, chunky yarn." },
             { id: 38, name: "Lace-Trim Cardigan", price: 5200.00, imageUrl: "images/cardigan 2.jpg", isNew: false, category: "Apparel", description: "An elegant, lightweight cardigan featuring beautiful lace trim details. Perfect for adding a touch of handmade sophistication to your outfit." },
             { id: 39, name: "Boho Bikini Set", price: 3500.00, imageUrl: "images/bikiini set.webp", isNew: true, category: "Apparel", description: "A stunning, handmade boho-style crochet bikini set. Perfect for beach days and festivals. Lined for comfort and fit.", reviews: [{name: "Sarah L.", rating: 5, comment: "Absolutely love this bikini! So well made and comfortable."}, {name: "Jessica P.", rating: 4, comment: "Beautiful design, fits great. A little pricey but worth it."}] },
-            { id: 40, name: "Classic Triangle Bikini Set", price: 3200.00, imageUrl: "images/bikini set.jpg", isNew: true, category: "Apparel", description: "A timeless triangle-top crochet bikini set. Adjustable ties ensure a perfect fit for fun in the sun.", reviews: [{name: "Emily R.", rating: 5, comment: "Perfect for summer, very stylish and good quality."}, {name: "David M.", rating: 3, comment: "Bought for my girlfriend, she liked it. Material is a bit thin."}] }
+            { id: 40, name: "Classic Triangle Bikini Set", price: 3200.00, imageUrl: "images/bikini set.jpg", isNew: true, category: "Apparel", description: "A timeless triangle-top crochet bikini set. Adjustable ties ensure a perfect fit for fun in the sun.", reviews: [{name: "Emily R.", rating: 5, comment: "Perfect for summer, very stylish and good quality."}, {name: "David M.", rating: 3, comment: "Bought for my girlfriend, she liked it. Material is a bit thin."}] },
+            { id: 41, name: "Boho Beach bikini", price: 3800.00, imageUrl: "images/bikini top.jpg", isNew: true, category: "Apparel", description: "A beautiful and breezy crochet beach cover-up. Perfect for wearing over your bikini on a sunny day." },
+            { id: 42, name: "Granny Square Tote Bag", price: 3200.00, imageUrl: "images/tote bag 4.jpg", isNew: true, category: "Accessories", description: "A vibrant and stylish tote bag made from classic granny squares. A spacious and eye-catching accessory." },
+            { id: 43, name: "Market Tote Bag", price: 2900.00, imageUrl: "images/tote bag 1.webp", isNew: true, category: "Accessories", description: "A durable and expandable market tote, perfect for trips to the farmer's market or grocery store." },
+            { id: 44, name: "Sunflower Tote Bag", price: 3400.00, imageUrl: "images/tote bag 6.jpg", isNew: true, category: "Accessories", description: "Brighten your day with this cheerful sunflower-themed tote bag. A beautiful and functional piece of art.", isBestSeller: true },
+            { id: 45, name: "Striped Beach Tote", price: 3100.00, imageUrl: "images/tote bag 2.webp", isNew: true, category: "Accessories", description: "A classic, nautical-striped tote bag that's large enough for your towel, sunscreen, and a good book." },
+            { id: 46, name: "Minimalist Net Tote", price: 2600.00, imageUrl: "images/net-tote.jpg", isNew: true, category: "Accessories", description: "A lightweight and chic net tote bag. Folds up small, making it perfect for travel and impromptu shopping." },
+            { id: 47, name: "Everyday Shoulder Tote", price: 3000.00, imageUrl: "images/tote bag 3.webp", isNew: true, category: "Accessories", description: "A simple yet elegant shoulder tote for everyday use. Sturdy, stylish, and practical." },
+            { id: 48, name: "Lightweight Shoulder Shrug", price: 2800.00, imageUrl: "images/shoulder shrug.webp", isNew: true, category: "Apparel", description: "A delicate and lightweight shoulder shrug, perfect for layering over a dress or top on a cool evening." },
+            { id: 49, name: "Summer Dress with Top Set", price: 5500.00, imageUrl: "images/dress with top.jpg", isNew: true, category: "Apparel", description: "A gorgeous matching set featuring a crochet top and a flowing summer dress. The perfect coordinated outfit." },
+            { id: 50, name: "Easy Summer Halter Dress", price: 4200.00, imageUrl: "images/beach wear.jpg", isNew: true, category: "Apparel", description: "An easy-to-wear and breezy summer halter dress. Effortlessly stylish for warm weather." },
+            { id: 51, name: "Half Sleeve Shrug", price: 3200.00, imageUrl: "images/half sleeve shrug.jpg", isNew: true, category: "Apparel", description: "A versatile half-sleeve shrug that adds a touch of handmade charm to any outfit. Great for all seasons." },
+            { id: 52, name: "Chunky Sleeve Shrug", price: 3800.00, imageUrl: "images/chunky sleeve shrug.jpg", isNew: true, category: "Apparel", description: "Make a statement with this cozy and fashionable chunky sleeve shrug. Perfect for a bold, modern look." },
+            { id: 53, name: "Breezy Summer set", price: 4800.00, imageUrl: "images/easy summer wear.webp", isNew: true, category: "Apparel", description: "An effortlessly chic and comfortable crochet jumpsuit. The perfect one-piece outfit for any summer occasion." }
         ];
 
         /**
@@ -1045,6 +1189,8 @@
                 renderCart();
             } else if (pageId === 'order-history-page') {
                 renderOrderHistory();
+            } else if (pageId === 'my-account-page') {
+                // Future logic for the account page can go here
             }
         }
 
@@ -1275,6 +1421,80 @@
                 updateCarousel();
             });
             updateCarousel(); // Initial call
+        }
+        /**
+         * Renders the best sellers on the home page.
+         */
+        function renderBestSellers() {
+            const bestSellersList = document.getElementById('best-sellers-list');
+            const bestSellerProducts = products.filter(p => p.isBestSeller).slice(0, 4);
+
+            bestSellersList.innerHTML = bestSellerProducts.map(product => {
+                return `
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col relative group transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
+                    <div class="relative">
+                        <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-48 object-cover cursor-pointer" onclick="openFeaturedImageModal('${product.imageUrl}')">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                            <button onclick="openQuickView(${product.id})" class="text-white bg-black bg-opacity-50 px-4 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">Quick View</button>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <div class="flex-grow">
+                            <h3 class="text-xl font-semibold text-gray-800">${product.name}</h3>
+                            <p class="text-2xl font-bold text-amber-800 mt-2">Ksh ${product.price.toFixed(2)}</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-4 space-x-2">
+                             <button onclick="addToWishlist(${product.id})" class="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full" title="Add to Wishlist">
+                                <i class="fas fa-heart text-xl"></i>
+                            </button>
+                            <button onclick="addToCart(${product.id})" class="bg-amber-700 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-800 transition-colors flex-grow">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+        /**
+         * Renders the recently viewed products on the home page.
+         */
+        function renderRecentlyViewed() {
+            const recentlyViewedSection = document.getElementById('recently-viewed-section');
+            const recentlyViewedList = document.getElementById('recently-viewed-list');
+
+            if (recentlyViewedIds.length === 0) {
+                recentlyViewedSection.classList.add('hidden');
+                return;
+            }
+
+            const viewedProducts = recentlyViewedIds.map(id => products.find(p => p.id === id)).filter(Boolean); // .filter(Boolean) removes any undefined if a product was deleted
+
+            recentlyViewedList.innerHTML = viewedProducts.map(product => {
+                return `
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col relative group transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
+                    <div class="relative">
+                        <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-48 object-cover cursor-pointer" onclick="openFeaturedImageModal('${product.imageUrl}')">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                            <button onclick="openQuickView(${product.id})" class="text-white bg-black bg-opacity-50 px-4 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">Quick View</button>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <div class="flex-grow">
+                            <h3 class="text-xl font-semibold text-gray-800">${product.name}</h3>
+                            <p class="text-2xl font-bold text-amber-800 mt-2">Ksh ${product.price.toFixed(2)}</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-4 space-x-2">
+                             <button onclick="addToWishlist(${product.id})" class="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full" title="Add to Wishlist">
+                                <i class="fas fa-heart text-xl"></i>
+                            </button>
+                            <button onclick="addToCart(${product.id})" class="bg-amber-700 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-800 transition-colors flex-grow">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+            recentlyViewedSection.classList.remove('hidden');
         }
         /**
          * Renders the category filter buttons.
@@ -1725,6 +1945,20 @@
             const modal = document.getElementById('quick-view-modal');
             const contentContainer = document.getElementById('quick-view-content');
 
+            // --- Add to Recently Viewed Logic ---
+            // Remove the ID if it already exists to move it to the front
+            recentlyViewedIds = recentlyViewedIds.filter(id => id !== productId);
+            // Add the new ID to the beginning of the array
+            recentlyViewedIds.unshift(productId);
+            // Keep only the last 4 unique items
+            if (recentlyViewedIds.length > 4) {
+                recentlyViewedIds = recentlyViewedIds.slice(0, 4);
+            }
+            // Save to localStorage and re-render the section
+            saveRecentlyViewedToLocalStorage();
+            renderRecentlyViewed();
+            // --- End Recently Viewed Logic ---
+
             // Main product details
             contentContainer.innerHTML = `
                 <div>
@@ -1884,6 +2118,22 @@
         }
 
         /**
+         * Saves the recently viewed items to local storage.
+         */
+        function saveRecentlyViewedToLocalStorage() {
+            localStorage.setItem('cherylCrotchetRecentlyViewed', JSON.stringify(recentlyViewedIds));
+        }
+
+        /**
+         * Loads the recently viewed items from local storage.
+         */
+        function loadRecentlyViewedFromLocalStorage() {
+            const savedItems = localStorage.getItem('cherylCrotchetRecentlyViewed');
+            if (savedItems) {
+                recentlyViewedIds = JSON.parse(savedItems);
+            }
+        }
+        /**
          * Saves the order history to local storage.
          */
         function saveOrderHistoryToLocalStorage() {
@@ -1943,6 +2193,76 @@
             }
         }
 
+        // --- Auth Modal Logic ---
+        const authModal = document.getElementById('auth-modal');
+        const loginFormContainer = document.getElementById('login-form-container');
+        const registerFormContainer = document.getElementById('register-form-container');
+
+        /**
+         * Opens the authentication modal.
+         * @param {string} [view='login'] - The view to show ('login' or 'register').
+         */
+        function openAuthModal(view = 'login') {
+            authModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            switchAuthView(view);
+        }
+
+        /**
+         * Closes the authentication modal.
+         */
+        function closeAuthModal() {
+            authModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        /**
+         * Switches between the login and register forms within the modal.
+         * @param {string} viewToShow - The view to show ('login' or 'register').
+         */
+        function switchAuthView(viewToShow) {
+            if (viewToShow === 'register') {
+                loginFormContainer.style.display = 'none';
+                registerFormContainer.style.display = 'block';
+            } else {
+                loginFormContainer.style.display = 'block';
+                registerFormContainer.style.display = 'none';
+            }
+        }
+
+        // Placeholder form submission handlers
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            console.log('Login attempt');
+            showMessage('Logged in successfully! (simulation)');
+            closeAuthModal();
+        });
+        document.getElementById('register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            console.log('Registration attempt');
+            showMessage('Account created successfully! (simulation)');
+            closeAuthModal();
+        });
+
+        // --- Account Page Logic ---
+        document.getElementById('account-details-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // In a real app, this would send data to a server
+            const name = document.getElementById('account-name').value;
+            const email = document.getElementById('account-email').value;
+            console.log('Updating account details for:', { name, email });
+            showMessage('Account details updated successfully! (simulation)');
+        });
+
+        /**
+         * Logs the user out (simulation).
+         */
+        function logout() {
+            // In a real app, this would clear session/token
+            console.log('User logged out.');
+            showMessage('You have been logged out.');
+            showPage('home-page'); // Redirect to home page
+        }
         /**
          * Opens a policy modal.
          * @param {string} modalId - The ID of the modal to open.
@@ -2024,17 +2344,24 @@
         window.closeFeaturedImageModal = closeFeaturedImageModal;
         window.openPolicyModal = openPolicyModal;
         window.closePolicyModal = closePolicyModal;
+        window.openAuthModal = openAuthModal;
+        window.closeAuthModal = closeAuthModal;
+        window.switchAuthView = switchAuthView;
         window.changePage = changePage;
+        window.logout = logout;
         
         // Initial setup on page load
         window.onload = () => {
             // Load any saved reviews from local storage first
             loadReviewsFromLocalStorage();
+            loadRecentlyViewedFromLocalStorage();
             loadOrderHistoryFromLocalStorage();
 
             renderProducts();
             renderCategoryFilters();
             renderNewArrivals();
+            renderBestSellers();
+            renderRecentlyViewed();
             renderCart();
             renderWishlist();
             updateWishlistCount();
