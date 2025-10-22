@@ -12,6 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for social and profile icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Favicon -->
+    <link rel="icon" href="images/Gemini_Generated_Image_vomy3bvomy3bvomy.png" type="image/png">
+    <link rel="apple-touch-icon" href="images/Gemini_Generated_Image_vomy3bvomy3bvomy.png">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -106,6 +109,14 @@
 </head>
 <body class="flex flex-col min-h-screen">
 
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="fixed top-0 left-0 w-full h-full bg-stone-50 z-[9999] flex flex-col items-center justify-center transition-opacity duration-500 ease-in-out">
+        <div class="text-center">
+            <img src="images/Gemini_Generated_Image_vomy3bvomy3bvomy.png" alt="Cheryl's Crochet Logo" class="h-24 w-24 mx-auto rounded-full mb-4 animate-pulse">
+            <h1 class="text-5xl font-heading text-amber-800">Cheryl's Crochet</h1>
+            <p class="text-lg text-gray-600 mt-2">Crafting joy, one stitch at a time...</p>
+        </div>
+    </div>
     <!-- Header & Navigation -->
     <header class="bg-white shadow-lg py-4 fixed w-full top-0 z-50">
         <nav class="container mx-auto px-4 md:px-6 flex items-center justify-between">
@@ -2482,6 +2493,14 @@
         
         // Initial setup on page load
         window.onload = () => {
+            // --- Splash Screen Hiding Logic ---
+            const splashScreen = document.getElementById('splash-screen');
+            if (splashScreen) {
+                splashScreen.classList.add('opacity-0');
+                // Remove from DOM after transition
+                setTimeout(() => splashScreen.style.display = 'none', 500);
+            }
+
             // Load any saved reviews from local storage first
             loadReviewsFromLocalStorage();
             loadRecentlyViewedFromLocalStorage();
